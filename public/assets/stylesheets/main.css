@@ -1,0 +1,190 @@
+/* ---- fonts ---- */
+/* All three are variable fonts, latin subset only, self hosted.
+   Fraunces defaults to wght 900, so every rule using it sets a weight. */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/assets/fonts/fraunces-latin-var.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/assets/fonts/inter-tight-latin-var.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/assets/fonts/jetbrains-mono-latin-var.woff2') format('woff2');
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+/* ---- tokens ---- */
+:root {
+  --bg: #fbfaf8;
+  --ink: #17161a;
+  --ink-soft: #3d3a44;
+  --ink-mute: #6a6672;
+  --rule: #e6e2dc;
+  --accent: #6f0697;
+  --live: #1a7f4b;
+  --dark: #0d0d10;
+  --dark-ink: #ecebe8;
+  --dark-mute: #a5a2ab;
+
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Inter Tight', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --measure: 62ch;
+  --gutter: 24px;
+  --max: 940px;
+}
+
+/* ---- reset ---- */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; }
+img { max-width: 100%; height: auto; display: block; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---- type ---- */
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  letter-spacing: -.02em;
+  margin: 0 0 .5em;
+}
+h1 { font-size: clamp(38px, 6vw, 64px); line-height: 1.03; }
+h2 { font-size: clamp(26px, 3.6vw, 36px); line-height: 1.12; }
+h3 { font-size: 20px; line-height: 1.25; }
+p { margin: 0 0 1em; max-width: var(--measure); }
+.lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-soft); }
+.label {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 14px;
+}
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
+a:hover { color: var(--ink); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---- chrome ---- */
+.site-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.site-head img { height: 26px; width: auto; }
+.site-nav { display: flex; gap: 26px; }
+.site-nav a { font-size: 14px; color: var(--ink); border-bottom: 0; }
+.site-nav a:hover { color: var(--accent); }
+
+/* ---- work index rows ---- */
+.work-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 0;
+  border-top: 1px solid var(--rule);
+}
+.work-row:first-of-type { border-top: 1px solid var(--ink); }
+.work-num { font-family: var(--mono); font-weight: 400; font-size: 10px; color: var(--accent); }
+.work-name { font-family: var(--serif); font-weight: 400; font-size: 19px; }
+.work-what { font-size: 13.5px; color: var(--ink-mute); }
+
+/* ---- status ---- */
+.status {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-live { color: var(--live); }
+.status-dev, .status-delivered { color: var(--ink-mute); }
+
+/* ---- case study ---- */
+.case-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 32px;
+}
+.block { margin: 0 0 40px; }
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 28px;
+  border-top: 1px solid var(--rule);
+}
+.seg > div { padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.seg h4 { font-family: var(--serif); font-weight: 400; font-size: 16px; margin: 0 0 4px; }
+.seg p { font-size: 13px; color: var(--ink-mute); margin: 0; max-width: none; }
+.eng { list-style: none; padding: 0; margin: 0; }
+.eng li {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  padding: 10px 0 10px 22px;
+  border-top: 1px solid var(--rule);
+  position: relative;
+}
+/* Bullet, not an em dash: the site copy rule bans em dashes and that
+   includes generated content. */
+.eng li::before { content: "\2022"; position: absolute; left: 0; color: var(--accent); }
+.pull {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(22px, 3.2vw, 30px);
+  line-height: 1.3;
+  border-left: 2px solid var(--accent);
+  padding-left: 24px;
+  max-width: 32ch;
+}
+figure { margin: 0 0 12px; }
+figcaption { font-size: 12.5px; color: var(--ink-mute); margin-top: 8px; }
+
+/* ---- dark contact band ---- */
+.contact { background: var(--dark); color: var(--dark-ink); margin-top: 80px; padding: 64px 0; }
+.contact h2 { color: var(--dark-ink); }
+.contact p { color: var(--dark-mute); }
+.contact a { color: var(--dark-ink); border-bottom-color: #4a4a55; }
+.contact a:hover { color: #fff; }
+.contact a:focus-visible { outline-color: var(--dark-ink); }
+.contact-actions { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 22px; }
+
+/* ---- footer ---- */
+.site-foot { background: var(--dark); color: var(--dark-mute); padding: 0 0 40px; font-size: 12.5px; }
+.site-foot .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* ---- responsive ---- */
+@media (max-width: 768px) {
+  .seg { grid-template-columns: 1fr; }
+  .site-nav { gap: 16px; }
+  .work-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .case-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .contact { padding: 48px 0; margin-top: 56px; }
+}
