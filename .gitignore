@@ -1,3 +1,5 @@
 # Ignore env file
 /.env
 /load_env.sh
+# Brainstorming session artifacts
+/.superpowers/

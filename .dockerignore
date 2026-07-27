@@ -2,3 +2,5 @@
 # reach the image, which is published to a public Docker Hub repo.
 /.env
 /load_env.sh
+/.superpowers/
+/.kamal/
