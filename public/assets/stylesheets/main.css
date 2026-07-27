@@ -94,6 +94,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   border-bottom: 1px solid var(--rule);
 }
 .site-head img { height: 26px; width: auto; }
+.site-logo { border-bottom: 0; }
 .site-nav { display: flex; gap: 26px; }
 .site-nav a { font-size: 14px; color: var(--ink); border-bottom: 0; }
 .site-nav a:hover { color: var(--accent); }
