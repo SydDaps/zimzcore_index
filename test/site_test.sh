@@ -11,9 +11,11 @@ PASS=0; FAIL=0
 ok()  { printf "  ok    %s\n" "$1"; PASS=$((PASS+1)); }
 bad() { printf "  FAIL  %s\n" "$1"; FAIL=$((FAIL+1)); }
 
-# -L so a redirect to the canonical host is not reported as a broken link.
-status() { curl -sSL -o /dev/null -w '%{http_code}' --max-time 10 "$1" 2>/dev/null; }
-raw()    { curl -sS --max-time 10 "$1" 2>/dev/null; }
+# Page and asset assertions must NOT follow redirects: a clean URL that only
+# works via a 301 is not a clean URL. Only the outbound check follows.
+status()        { curl -sS  -o /dev/null -w '%{http_code}' --max-time 10 "$1" 2>/dev/null; }
+status_follow() { curl -sSL -o /dev/null -w '%{http_code}' --max-time 10 "$1" 2>/dev/null; }
+raw()           { curl -sS --max-time 10 "$1" 2>/dev/null; }
 
 # Fetch once, then flatten newlines to spaces. Multi-word needles like
 # "transform your vision" must not be defeatable by a line wrap.
@@ -59,7 +61,7 @@ echo "== pages return 200 =="
 for p in $PAGES; do expect_status "$p" 200; done
 expect_status "/up.html" 200
 
-echo "== page contract: SSI assembly, contact, banned copy =="
+echo "== page contract: SSI assembly, contact, banned copy, assets =="
 for p in $PAGES; do
   b="$(fetch_norm "$BASE$p")"
   # data-chrome markers exist ONLY in the partials, so finding them proves
@@ -67,10 +69,27 @@ for p in $PAGES; do
   expect_body_contains "$p" "$b" 'data-chrome="header"'
   expect_body_contains "$p" "$b" 'data-chrome="footer"'
   expect_body_contains "$p" "$b" 'wa.me/233557711911'
+
   while IFS= read -r needle; do
     [ -n "$needle" ] && expect_body_absent "$p" "$b" "$needle"
   done <<EOF
 $BANNED
+EOF
+
+  # Asset refs are checked per page so a failure names where it came from.
+  # A relative ref is a FAILURE, not something to normalise: on /work/lokkate
+  # "assets/x.png" resolves to /work/assets/x.png, which is not where it lives.
+  refs="$(printf '%s' "$b" | grep -oE '(href|src|srcset)="[^"]*"' | sed 's/^[a-z]*="//; s/"$//' | tr ',' '\n' | awk '{print $1}' | grep -E '(^|\./|/)assets/' | sort -u)"
+  while IFS= read -r ref; do
+    [ -z "$ref" ] && continue
+    case "$ref" in
+      /*) # Absolute. Encode spaces; other reserved characters are not
+          # handled, which is fine for the filenames in use today.
+          expect_status "${ref// /%20}" 200 ;;
+      *)  bad "$p references '$ref' relatively (use an absolute /assets/... path)" ;;
+    esac
+  done <<EOF
+$refs
 EOF
 done
 
@@ -79,29 +98,12 @@ for p in $PARTIALS; do expect_status "$p" 404; done
 expect_status "/_old.html" 404
 expect_status "/_probe-does-not-exist" 404
 
-echo "== referenced assets resolve =="
-assets="$(for p in $PAGES; do
-  raw "$BASE$p" | grep -oE '(href|src)="[^"]*"' | sed 's/^[a-z]*="//; s/"$//'
-done | grep -E '^/?assets/' | sed 's|^assets/|/assets/|' | sort -u)"
-
-if [ -z "$assets" ]; then
-  bad "no asset references found on any page"
-else
-  while IFS= read -r a; do
-    [ -z "$a" ] && continue
-    # Some image filenames contain spaces, so encode before requesting.
-    expect_status "${a// /%20}" 200
-  done <<EOF
-$assets
-EOF
-fi
-
 echo "== outbound links resolve =="
 if [ "${SKIP_NETWORK:-0}" = "1" ]; then
   echo "  skipped (SKIP_NETWORK=1)"
 else
   for url in https://lokkate.com https://liveonforever.com; do
-    got="$(status "$url")"
+    got="$(status_follow "$url")"
     case "$got" in
       2*|3*) ok "$url -> $got" ;;
       *)     bad "$url -> got $got" ;;
