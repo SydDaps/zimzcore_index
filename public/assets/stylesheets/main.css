@@ -85,12 +85,21 @@ a:hover { color: var(--ink); }
 a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 /* ---- chrome ---- */
+/* The header is also a .wrap, so it must not use the `padding` shorthand:
+   `padding: 26px 0` would reset the horizontal half and wipe out the
+   --gutter that .wrap sets, because both rules have the same specificity
+   and this one comes later. Above 988px it only showed as the header
+   sitting 24px wider than the body content it is meant to line up with,
+   but on a phone it pinned the logo to x=0 and pushed the nav flush
+   against the right screen edge, with no gutter left at all.
+   padding-block only ever touches the vertical axis, so the gutter holds. */
 .site-head {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 26px 0;
+  padding-block: 26px;
   border-bottom: 1px solid var(--rule);
 }
 .site-head img { height: 26px; width: auto; }
