@@ -17,9 +17,9 @@ status()        { curl -sS  -o /dev/null -w '%{http_code}' --max-time 10 "$1" 2>
 status_follow() { curl -sSL -o /dev/null -w '%{http_code}' --max-time 10 "$1" 2>/dev/null; }
 raw()           { curl -sS --max-time 10 "$1" 2>/dev/null; }
 
-# Fetch once, then flatten newlines to spaces. Multi-word needles like
-# "transform your vision" must not be defeatable by a line wrap.
-fetch_norm() { raw "$1" | tr '\n\r\t' '   ' | tr -s ' '; }
+# Flatten newlines so multi-word needles survive a line wrap in the source.
+# Spaces are NOT squeezed here: asset filenames can contain runs of spaces.
+fetch_flat() { raw "$1" | tr '\n\r\t' '   '; }
 
 expect_status() {
   local path="$1" want="$2" got
@@ -63,7 +63,10 @@ expect_status "/up.html" 200
 
 echo "== page contract: SSI assembly, contact, banned copy, assets =="
 for p in $PAGES; do
-  b="$(fetch_norm "$BASE$p")"
+  # One fetch, two views. b_raw preserves runs of spaces, which asset
+  # filenames need. b squeezes them, which multi-word copy needles need.
+  b_raw="$(fetch_flat "$BASE$p")"
+  b="$(printf '%s' "$b_raw" | tr -s ' ')"
   # data-chrome markers exist ONLY in the partials, so finding them proves
   # SSI actually assembled the page rather than proving a string exists.
   expect_body_contains "$p" "$b" 'data-chrome="header"'
@@ -84,7 +87,7 @@ EOF
   # Deliberately NOT a whitespace split: some image filenames contain spaces
   # (including one with a double space), and truncating at the first space
   # would report a 404 for a file that exists and is referenced correctly.
-  refs="$(printf '%s' "$b" \
+  refs="$(printf '%s' "$b_raw" \
     | grep -oE '(href|src|srcset)="[^"]*"' \
     | sed 's/^[a-z]*="//; s/"$//' \
     | tr ',' '\n' \
