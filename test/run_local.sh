@@ -3,6 +3,8 @@
 # Usage: test/run_local.sh [start|stop]
 set -e
 
+docker info >/dev/null 2>&1 || { echo "Docker is not running"; exit 1; }
+
 NAME=zimzcore_local
 PORT=8099
 IMAGE=syddaps/zimzcore_index:latest
@@ -25,5 +27,8 @@ case "${1:-start}" in
   stop)
     docker rm -f "$NAME" >/dev/null 2>&1 || true
     echo "stopped"
+    ;;
+  *)
+    echo "usage: $0 [start|stop]" >&2; exit 2
     ;;
 esac
