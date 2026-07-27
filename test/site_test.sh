@@ -79,7 +79,19 @@ EOF
   # Asset refs are checked per page so a failure names where it came from.
   # A relative ref is a FAILURE, not something to normalise: on /work/lokkate
   # "assets/x.png" resolves to /work/assets/x.png, which is not where it lives.
-  refs="$(printf '%s' "$b" | grep -oE '(href|src|srcset)="[^"]*"' | sed 's/^[a-z]*="//; s/"$//' | tr ',' '\n' | awk '{print $1}' | grep -E '(^|\./|/)assets/' | sort -u)"
+  #
+  # Split srcset on commas, then strip only a trailing "1x"/"640w" descriptor.
+  # Deliberately NOT a whitespace split: some image filenames contain spaces
+  # (including one with a double space), and truncating at the first space
+  # would report a 404 for a file that exists and is referenced correctly.
+  refs="$(printf '%s' "$b" \
+    | grep -oE '(href|src|srcset)="[^"]*"' \
+    | sed 's/^[a-z]*="//; s/"$//' \
+    | tr ',' '\n' \
+    | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//' \
+    | sed -E 's/[[:space:]]+[0-9.]+[xw]$//' \
+    | grep -E '(^|\./|/)assets/' \
+    | sort -u)"
   while IFS= read -r ref; do
     [ -z "$ref" ] && continue
     case "$ref" in
