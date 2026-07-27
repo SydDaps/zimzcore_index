@@ -70,10 +70,9 @@ public/
   work/live-on-forever.html     /work/live-on-forever
   work/kasagandi-ai.html        /work/kasagandi-ai
   work/fellowship-lms.html      /work/fellowship-lms
-  _includes/head.html           meta, font preloads, stylesheet link
-  _includes/header.html         logo, nav: Work / What we do / Contact
-  _includes/footer.html         contact block, copyright
-  _errors/404.html              existing, keep, fix its SSI
+  _includes/header.html         doctype, head, meta, font preloads, stylesheet, logo, nav
+  _includes/footer.html         contact band, copyright, closes the document
+  _errors/404.html              existing, keep, restyle only
   assets/stylesheets/main.css   single hand written stylesheet
   assets/fonts/                 self hosted woff2
   assets/images/work/           project screenshots
@@ -99,22 +98,42 @@ The existing nginx `try_files $uri $uri.html $uri/index.html =404` already serve
 
 ### Shared chrome via SSI
 
-Pages include shared partials instead of duplicating markup.
+Pages include shared partials instead of duplicating markup. `ssi on` is already set in
+`config/server.conf`, so no nginx change is required.
 
-The existing SSI directives are broken. `public/_errors/404.html` and `public/_old.html` use
-`<!--# include file="..." -->`. Two problems: the space after `#`, and `file` where `virtual` is
-wanted. Correct form:
+**Verified working in the nginx container on 2026-07-27**, and confirmed live on production. The
+existing `public/_errors/404.html` renders its partial correctly today: `https://zimzcore.com/nope`
+returns a full document with `<title>404: Not Found</title>`, and that title element exists only
+inside `_includes/header.html`.
+
+An earlier reading of this spec claimed the existing SSI directives were broken. That was wrong.
+Container testing showed all of these forms render correctly, at the site root and in
+subdirectories:
 
 ```
-<!--#include virtual="/_includes/header.html" -->
+<!--# include file="/_includes/header.html" -->     works
+<!--#include virtual="/_includes/header.html" -->   works
+<!--# include virtual="/_includes/header.html" -->  works
 ```
 
-`virtual` resolves against the document root, which is what shared partials need. `ssi on` is
-already set in `config/server.conf`, so no nginx change is required.
+Neither the space after `#` nor `file=` versus `virtual=` breaks anything here. No fix is needed.
 
-This must be verified in the container before five pages depend on it. If SSI cannot be made to
-work, the fallback is duplicating header and footer markup across the pages. Workable, just
-tedious to keep in sync.
+**Follow the existing convention rather than replacing it.** The current partials are a document
+skeleton, not fragments:
+
+- `_includes/header.html` opens the document: doctype, `<html>`, `<head>`, `<title>`, `<body>`.
+- `_includes/footer.html` closes it: `</body></html>`.
+- The page title is passed in with `<!--# set var="title" value="..." -->` at the top of each page
+  and read by `<!--# echo var="title" -->` inside the header partial. This mechanism is verified
+  working on production.
+
+New pages extend this: the header partial gains the nav and the stylesheet link, the footer gains
+the contact band. The separate `_includes/head.html` proposed earlier is not needed, because the
+header partial already owns the document head.
+
+Also verified in the container: clean URLs and includes work together (`/work/lokkate` resolves
+`work/lokkate.html` and renders its partials), and partials still return 404 on direct request
+while rendering internally.
 
 ### Underscore paths stay private
 
@@ -265,5 +284,6 @@ the deploy is called done.
 ## Housekeeping folded into this work
 
 - Delete `public/_old.html`. Dead, and now 404 anyway.
-- Fix the broken SSI syntax in `public/_errors/404.html`. Its header and footer have never rendered.
+- Restyle `public/_errors/404.html` to match the new design. Its SSI already works, so this is a
+  content and styling change only.
 - `.superpowers/` is already added to `.gitignore` and `.dockerignore`.
