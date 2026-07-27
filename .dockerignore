@@ -1,2 +1,4 @@
-# Ignore env file
+# Ignore env files — these hold live registry/git credentials and must never
+# reach the image, which is published to a public Docker Hub repo.
 /.env
+/load_env.sh
