@@ -167,7 +167,7 @@ expect_status "/_old.html" 404
 
 echo "== banned copy is gone =="
 for p in $PAGES; do
-  expect_absent "$p" '0+ '
+  expect_absent "$p" '>0+<'
   expect_absent "$p" 'cutting-edge'
   expect_absent "$p" 'seamless'
   expect_absent "$p" 'transform your vision'
@@ -206,8 +206,12 @@ test/site_test.sh
 
 Expected: many FAIL lines. `/work` and all four case studies 404 because they do not exist. The
 `data-chrome` markers are missing. Banned copy checks fail on `/` because the current homepage
-contains `0+ `, `cdn.tailwindcss.com`, `233203669141` and the two 502 subdomains. This failing
+contains `>0+<`, `cdn.tailwindcss.com`, `233203669141` and the two 502 subdomains. This failing
 output is the specification.
+
+The needle is `>0+<` rather than `0+ `, because the stat markup renders as
+`<div data-target="100">0+</div>` with no trailing space. A bare `0+` would false-positive on
+`100+`. This was found by running the suite rather than by reading it.
 
 - [ ] **Step 4: Commit**
 
