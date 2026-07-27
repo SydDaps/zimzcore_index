@@ -1,0 +1,59 @@
+<!--# set var="title" value="Kasagandi AI, fact checking for Ghana, Zimzcore" -->
+<!--# set var="description" value="A Ghana focused fact checking marketplace where the public submits claims and accredited checkers publish verdicts with evidence." -->
+<!--#include virtual="/_includes/header.html" -->
+
+<div class="case-top" style="margin-top:56px">
+  <span class="work-num">03 / WORK</span>
+  <span class="status status-dev">In development</span>
+</div>
+
+<h1>Kasagandi AI</h1>
+<p class="lede">Somewhere between a rumour and the truth there is a week of unpaid work. This is
+the system that organises it.</p>
+
+<div class="block">
+  <p class="label">The problem</p>
+  <p>A claim goes around Ghanaian WhatsApp and by the evening a few hundred thousand people have
+  seen it. Checking it properly takes days of real research, and the people capable of doing that
+  work have no route to it and no way to be paid for it.</p>
+  <p>So the checking either does not happen, or it happens in a newsroom nobody outside can see.
+  The verdict, when it exists, arrives with no evidence attached and no way to tell how it was
+  reached. Asking the public to trust a bare conclusion is exactly the problem that started this.</p>
+</div>
+
+<div class="block">
+  <p class="label">Who it is for</p>
+  <div class="seg">
+    <div><h4>Members of the public</h4><p>Saw something suspicious and wants to know whether it is true.</p></div>
+    <div><h4>Accredited fact checkers</h4><p>Has the skill to investigate. Wants assignments and a record of the work.</p></div>
+    <div><h4>Editors and administrators</h4><p>Triages what comes in, assigns it, and decides what gets published.</p></div>
+    <div><h4>Anyone reading</h4><p>Browses published verdicts without an account, and can see the evidence behind each one.</p></div>
+  </div>
+</div>
+
+<div class="block">
+  <p class="label">What we built</p>
+  <p>A marketplace with three roles. The public submits claims. Administrators triage them and
+  assign them to accredited fact checkers. Checkers research, attach their evidence, and submit a
+  verdict. An administrator approves it, and only then does it appear publicly.</p>
+  <p>The whole journey from a suspicious headline to a verdict with its research trail attached
+  lives in one auditable system, so a reader can see not only the conclusion but how it was
+  reached.</p>
+</div>
+
+<div class="block">
+  <p class="label">Notable engineering</p>
+  <ul class="eng">
+    <li>A claim state machine governing submission, assignment, verdict and publication, with every transition recorded</li>
+    <li>Three role types over one identity, driving both routing and authorisation</li>
+    <li>Invitation only onboarding for fact checkers, since accreditation is the whole value</li>
+    <li>An audit log covering every action taken on a claim</li>
+    <li>Evidence attached to verdicts as first class records rather than pasted links</li>
+  </ul>
+</div>
+
+<div class="block">
+  <p class="pull">A verdict nobody can check is just another rumour with better manners.</p>
+</div>
+
+<!--#include virtual="/_includes/footer.html" -->
