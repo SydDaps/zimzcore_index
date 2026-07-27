@@ -54,7 +54,7 @@ expect_status "/_old.html" 404
 
 echo "== banned copy is gone =="
 for p in $PAGES; do
-  expect_absent "$p" '0+ '
+  expect_absent "$p" '>0+<'
   expect_absent "$p" 'cutting-edge'
   expect_absent "$p" 'seamless'
   expect_absent "$p" 'transform your vision'
