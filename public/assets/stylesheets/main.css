@@ -58,6 +58,14 @@ body {
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 
+/* ---- section rhythm ---- */
+/* These were inline `style="padding: ..."` on every page, which a media query
+   cannot override, so the desktop air carried straight onto a phone. Kept as
+   classes so the mobile breakpoint below can tighten them. */
+.sec { padding: 0 0 56px; }
+.sec--lead { padding-top: 72px; }
+.sec--tight { padding-bottom: 40px; }
+
 /* ---- type ---- */
 h1, h2, h3 {
   font-family: var(--serif);
@@ -68,7 +76,9 @@ h1, h2, h3 {
 }
 h1 { font-size: clamp(38px, 6vw, 64px); line-height: 1.03; }
 h2 { font-size: clamp(26px, 3.6vw, 36px); line-height: 1.12; }
-h3 { font-size: 20px; line-height: 1.25; }
+/* h2 and h3 are both Fraunces, so at similar sizes they read as the same
+   level. h3 is held down in size and pushed up in weight to separate them. */
+h3 { font-size: 19px; line-height: 1.3; font-weight: 500; letter-spacing: -.01em; }
 p { margin: 0 0 1em; max-width: var(--measure); }
 .lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-soft); margin-bottom: 2em; }
 .label {
@@ -102,7 +112,10 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   padding-block: 26px;
   border-bottom: 1px solid var(--rule);
 }
-.site-head img { height: 26px; width: auto; }
+/* The logo asset is trimmed to the artwork itself (997x156, about 6.4:1),
+   so this height is the height of the wordmark rather than the height of a
+   mostly empty square canvas. 24px gives roughly 153px of wordmark. */
+.site-head img { height: 24px; width: auto; }
 .site-logo { border-bottom: 0; }
 .site-nav { display: flex; gap: 26px; }
 .site-nav a { font-size: 14px; color: var(--ink); border-bottom: 0; }
@@ -142,9 +155,11 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   gap: 16px;
   border-bottom: 1px solid var(--ink);
   padding-bottom: 14px;
-  margin-bottom: 32px;
+  margin: 56px 0 32px;
 }
 .block { margin: 0 0 40px; }
+/* Two serif headings back to back need a beat between them. */
+h2 + .block { margin-top: 24px; }
 .seg {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -193,8 +208,28 @@ figcaption { font-size: 12.5px; color: var(--ink-mute); margin-top: 8px; }
 /* ---- responsive ---- */
 @media (max-width: 768px) {
   .seg { grid-template-columns: 1fr; }
-  .site-nav { gap: 16px; }
-  .work-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .case-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .seg > div { padding: 16px 0; }
+  .seg p { font-size: 14px; line-height: 1.55; }
+  .eng li { font-size: 15px; }
+  .pull { padding-left: 18px; }
+
+  /* The real wordmark is about 153px wide at 24px tall, so the header has to
+     give the nav room it did not need when the logo was a 26px speck. */
+  .site-head { padding-block: 20px; gap: 12px; }
+  .site-head img { height: 22px; }
+  .site-nav { gap: 18px; }
+  .site-nav a { font-size: 13px; }
+
+  /* Name and description ran together on one line, so the project name was
+     lost inside its own sentence. Break the description onto its own line. */
+  .work-row { flex-direction: column; align-items: flex-start; gap: 0; padding: 24px 0; }
+  .work-what { display: block; margin-top: 7px; font-size: 15px; line-height: 1.5; }
+  .work-row .status { margin-top: 8px; }
+  .work-row > span:last-child { margin-top: 12px; }
+
+  .case-top { flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 36px; }
+  .sec { padding-bottom: 44px; }
+  .sec--lead { padding-top: 44px; }
+  .sec--tight { padding-bottom: 34px; }
   .contact { padding: 48px 0; margin-top: 56px; }
 }
