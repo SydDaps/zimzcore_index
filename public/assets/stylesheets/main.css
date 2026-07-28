@@ -1,45 +1,63 @@
+/* Zimzcore, Instrument direction.
+   Structured, bordered, corporate. Energy comes from precision, not decoration.
+
+   Three rules hold the whole sheet together:
+   1. Mobile first. Every base rule is the 320px rule. The single media query
+      at 768px is the step up, never the correction.
+   2. No animation, no transition, no transform. Anywhere. This is deliberate.
+      A hover may change colour and nothing else.
+   3. Purple is a label colour. Never a fill, never a wash, no gradients, no
+      shadows, no tinted panels. */
+
 /* ---- fonts ---- */
-/* All three are variable fonts, latin subset only, self hosted.
-   Fraunces defaults to wght 900, so every rule using it sets a weight. */
+/* IBM Plex Sans arrives from Google as one variable file, wght axis 100 to 700,
+   default 400, so 400, 500 and 600 all come from this one face. IBM Plex Mono
+   is still static, one file per weight. Latin subset only, self hosted. */
 @font-face {
-  font-family: 'Fraunces';
-  src: url('/assets/fonts/fraunces-latin-var.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'IBM Plex Sans';
+  src: url('/assets/fonts/ibm-plex-sans-latin-var.woff2') format('woff2');
+  font-weight: 100 700;
+  font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Inter Tight';
-  src: url('/assets/fonts/inter-tight-latin-var.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'IBM Plex Mono';
+  src: url('/assets/fonts/ibm-plex-mono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/assets/fonts/jetbrains-mono-latin-var.woff2') format('woff2');
-  font-weight: 400 800;
+  font-family: 'IBM Plex Mono';
+  src: url('/assets/fonts/ibm-plex-mono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
   font-display: swap;
 }
 
 /* ---- tokens ---- */
 :root {
-  --bg: #fbfaf8;
-  --ink: #17161a;
-  --ink-soft: #3d3a44;
-  --ink-mute: #6a6672;
-  --rule: #e6e2dc;
+  --bg: #ffffff;
+  --ink: #0e0e13;
+  --ink-2: #55556a;
+  --ink-3: #8a8a9c;
+  --rule: #e8e8ef;
   --accent: #6f0697;
   --live: #1a7f4b;
-  --dark: #0d0d10;
-  --dark-ink: #ecebe8;
-  --dark-mute: #a5a2ab;
+  --btn: #0e0e13;
 
-  --serif: 'Fraunces', Georgia, serif;
-  --sans: 'Inter Tight', system-ui, -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* Derived from --btn for the dark band. Not new brand colours: the band is
+     the only place text sits on ink, and it needs a muted step and a hairline
+     that read correctly against it. */
+  --on-dark: #ffffff;
+  --on-dark-2: #9c9caf;
+  --rule-dark: #262630;
 
-  --measure: 62ch;
-  --gutter: 24px;
-  --max: 940px;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --max: 1040px;
+  --gutter: 18px;
 }
 
 /* ---- reset ---- */
@@ -51,186 +69,374 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 13px;
+  line-height: 1.6;
+  /* A long unbroken token, a URL in copy or a wide word in a narrow grid cell
+     is the usual source of horizontal overflow at 320px. Break it rather than
+     clipping the page with overflow-x: hidden, which hides the bug instead of
+     fixing it. */
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---- container ---- */
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 
-/* ---- section rhythm ---- */
-/* These were inline `style="padding: ..."` on every page, which a media query
-   cannot override, so the desktop air carried straight onto a phone. Kept as
-   classes so the mobile breakpoint below can tighten them. */
-.sec { padding: 0 0 56px; }
-.sec--lead { padding-top: 72px; }
-.sec--tight { padding-bottom: 40px; }
+/* Any rule that needs vertical padding on a .wrap element must use the
+   padding-block or padding-top longhand. The `padding` shorthand resets the
+   horizontal half and wipes out the gutter, which pins content to x=0 on a
+   phone. This has bitten this sheet once already. */
 
-/* ---- type ---- */
-h1, h2, h3 {
-  font-family: var(--serif);
-  font-weight: 300;
-  font-optical-sizing: auto;
-  letter-spacing: -.02em;
-  margin: 0 0 .5em;
+/* ---- links ---- */
+a { color: var(--accent); }
+a:hover { color: var(--ink); }
+/* Focus is the one visual affordance that must never be subtle. */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
-h1 { font-size: clamp(38px, 6vw, 64px); line-height: 1.03; }
-h2 { font-size: clamp(26px, 3.6vw, 36px); line-height: 1.12; }
-/* h2 and h3 are both Fraunces, so at similar sizes they read as the same
-   level. h3 is held down in size and pushed up in weight to separate them. */
-h3 { font-size: 19px; line-height: 1.3; font-weight: 500; letter-spacing: -.01em; }
-p { margin: 0 0 1em; max-width: var(--measure); }
-.lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-soft); margin-bottom: 2em; }
-.label {
+
+/* ---- header ---- */
+/* Full bleed element with a .wrap inside, so the hairline runs the whole width
+   while the mark and nav stay on the content grid. One row at every width down
+   to 320px, which the icon mark rather than a wordmark makes possible. */
+.site-head { border-bottom: 1px solid var(--rule); }
+.site-head .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+}
+.site-mark { display: flex; align-items: center; flex: 0 0 auto; }
+/* The mark is trimmed to the artwork (406x287, about 1.4:1), so this is the
+   height of the Z, not of a mostly empty canvas. 22px is roughly 31px wide. */
+.site-mark img { height: 22px; width: auto; }
+.site-nav { display: flex; align-items: center; gap: 15px; flex: 0 1 auto; }
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;          /* tap target, not visual height */
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: -.006em;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-nav a:hover { color: var(--accent); }
+
+/* ---- hero ---- */
+.hero { padding-block: 26px 24px; border-bottom: 1px solid var(--rule); }
+.kick {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 9.5px;
+  line-height: 1.4;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 13px;
+}
+.hero h1 {
+  font-size: 27px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -.033em;
+  margin: 0 0 12px;
+  max-width: 20ch;
+}
+.sub {
+  font-size: 13px;
+  line-height: 1.62;
+  color: var(--ink-2);
+  margin: 0 0 20px;
+  max-width: 46ch;
+}
+
+/* ---- button ---- */
+/* Sans, not mono, and no arrow. The mono arrow button was called gimmicky and
+   it was. Flat fill, no shadow, no transition. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 11px 19px;
+  background: var(--btn);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -.006em;
+  text-decoration: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn:hover { background: #2a2a35; color: #fff; }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- stat strip ---- */
+/* Three cells, vertical hairlines between them, sits directly under the hero.
+   The figures are real, which is why tabular numerals earn their place: they
+   are figures, not decoration imitating figures. minmax(0, 1fr) rather than
+   1fr so a long caption cannot push the grid wider than its container. */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid var(--rule);
+}
+.cell {
+  min-width: 0;
+  padding: 13px 10px 14px 13px;
+  border-left: 1px solid var(--rule);
+}
+.cell:first-child { border-left: 0; padding-left: 0; }
+.cell b {
+  display: block;
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.cell span {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 8.5px;
+  line-height: 1.35;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ---- sections ---- */
+.sect { padding-block: 28px 6px; }
+.shead { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; }
+.snum {
+  flex: 0 0 auto;
   font-family: var(--mono);
   font-weight: 500;
   font-size: 10px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: .06em;
   color: var(--accent);
-  margin: 0 0 14px;
 }
-a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
-a:hover { color: var(--ink); }
-a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.shead h2 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.022em;
+  margin: 0;
+  min-width: 0;
+}
 
-/* ---- chrome ---- */
-/* The header is also a .wrap, so it must not use the `padding` shorthand:
-   `padding: 26px 0` would reset the horizontal half and wipe out the
-   --gutter that .wrap sets, because both rules have the same specificity
-   and this one comes later. Above 988px it only showed as the header
-   sitting 24px wider than the body content it is meant to line up with,
-   but on a phone it pinned the logo to x=0 and pushed the nav flush
-   against the right screen edge, with no gutter left at all.
-   padding-block only ever touches the vertical axis, so the gutter holds. */
-.site-head {
+/* ---- items ---- */
+/* One row pattern serves the capabilities list, the work list and the case
+   study engineering list: title left, optional status right, description
+   below, optional mono spec line under that. */
+.item { padding: 15px 0; border-top: 1px solid var(--rule); }
+.item:last-child { border-bottom: 1px solid var(--rule); }
+.ihead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ihead h4 {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.012em;
+  margin: 0;
+  min-width: 0;
+}
+.ihead a { color: var(--ink); text-decoration: none; }
+.ihead a:hover { color: var(--accent); }
+.item p {
+  font-size: 12.5px;
+  line-height: 1.58;
+  color: var(--ink-2);
+  margin: 6px 0 0;
+  max-width: 60ch;
+}
+.specs {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 9.5px;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  color: var(--ink-3);
+  margin: 8px 0 0;
+}
+/* A plain line of text, not chips. The boxed spec chips were called gimmicky. */
+
+/* ---- status labels ---- */
+/* No dot, and nothing pulses. A blinking dot does not mean anything is being
+   monitored, so it is not here. */
+.st {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 9px;
+  line-height: 1.4;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-3);
+}
+.st-live { color: var(--live); }
+.st-build { color: var(--ink-2); }
+
+/* ---- case study audience segments ---- */
+.seg { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--rule); }
+.seg > * { min-width: 0; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.seg h4 {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.012em;
+  margin: 0 0 4px;
+}
+.seg p {
+  font-size: 12.5px;
+  line-height: 1.58;
+  color: var(--ink-2);
+  margin: 0;
+  max-width: none;
+}
+
+/* ---- pull quote ---- */
+.pull {
+  margin: 22px 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--accent);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  max-width: 34ch;
+}
+
+/* ---- contact band ---- */
+/* Full bleed dark at the foot of every page. Ink, not purple. */
+.contact {
+  background: var(--btn);
+  color: var(--on-dark);
+  margin-top: 34px;
+  padding-block: 32px 34px;
+}
+.contact h2 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.022em;
+  color: var(--on-dark);
+  margin: 0 0 8px;
+  max-width: 24ch;
+}
+.contact p {
+  font-size: 12.5px;
+  line-height: 1.58;
+  color: var(--on-dark-2);
+  margin: 0 0 14px;
+  max-width: 48ch;
+}
+.contact-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.contact-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -.006em;
+  color: var(--on-dark);
+  text-decoration: none;
+  border-bottom: 1px solid #4a4a58;
+}
+.contact-actions a:hover { color: var(--on-dark); border-bottom-color: var(--on-dark); }
+.contact a:focus-visible { outline-color: var(--on-dark); }
+
+/* ---- footer ---- */
+.site-foot {
+  background: var(--btn);
+  color: var(--on-dark-2);
+  padding-bottom: 26px;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 9.5px;
+  line-height: 1.5;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+/* padding-top longhand, so the .wrap gutter survives. */
+.site-foot .wrap {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding-block: 26px;
-  border-bottom: 1px solid var(--rule);
+  gap: 6px 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-dark);
 }
-/* The mark is trimmed to the artwork itself (406x287, about 1.4:1), so this
-   height is the height of the Z rather than the height of a mostly empty
-   square canvas. 30px gives roughly 42px wide, compact enough that the nav
-   stays on one line at every width. */
-.site-head img { height: 30px; width: auto; }
-.site-logo { border-bottom: 0; }
-.site-nav { display: flex; gap: 26px; }
-.site-nav a { font-size: 14px; color: var(--ink); border-bottom: 0; }
-.site-nav a:hover { color: var(--accent); }
+.site-foot a { color: var(--on-dark-2); }
+.site-foot a:hover { color: var(--on-dark); }
+.site-foot a:focus-visible { outline-color: var(--on-dark); }
 
-/* ---- work index rows ---- */
-.work-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding: 18px 0;
-  border-top: 1px solid var(--rule);
-}
-.work-row:first-of-type { border-top: 1px solid var(--ink); }
-.work-num { font-family: var(--mono); font-weight: 400; font-size: 10px; color: var(--accent); }
-.work-name { font-family: var(--serif); font-weight: 400; font-size: 19px; }
-.work-what { font-size: 13.5px; color: var(--ink-mute); }
+/* ---- desktop step up ---- */
+/* Modest. Mobile is the design surface and these figures are the approved
+   mockup; this query lifts them, it does not redesign them. */
+@media (min-width: 768px) {
+  :root { --gutter: 24px; }
 
-/* ---- status ---- */
-.status {
-  font-family: var(--mono);
-  font-weight: 400;
-  font-size: 10px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.status-live { color: var(--live); }
-.status-dev, .status-delivered { color: var(--ink-soft); font-weight: 500; }
+  .site-head .wrap { min-height: 62px; }
+  .site-mark img { height: 25px; }
+  .site-nav { gap: 24px; }
+  .site-nav a { font-size: 13.5px; }
 
-/* ---- case study ---- */
-.case-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  border-bottom: 1px solid var(--ink);
-  padding-bottom: 14px;
-  margin: 56px 0 32px;
-}
-.block { margin: 0 0 40px; }
-/* Two serif headings back to back need a beat between them. */
-h2 + .block { margin-top: 24px; }
-.seg {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0 28px;
-  border-top: 1px solid var(--rule);
-}
-.seg > div { padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.seg h4 { font-family: var(--serif); font-weight: 400; font-size: 16px; margin: 0 0 4px; }
-.seg p { font-size: 13px; color: var(--ink-mute); margin: 0; max-width: none; }
-.eng { list-style: none; padding: 0; margin: 0; }
-.eng li {
-  font-size: 14.5px;
-  color: var(--ink-soft);
-  padding: 10px 0 10px 22px;
-  border-top: 1px solid var(--rule);
-  position: relative;
-}
-/* Bullet, not an em dash: the site copy rule bans em dashes and that
-   includes generated content. */
-.eng li::before { content: "\2022"; position: absolute; left: 0; color: var(--accent); }
-.pull {
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(22px, 3.2vw, 30px);
-  line-height: 1.3;
-  border-left: 2px solid var(--accent);
-  padding-left: 24px;
-  max-width: 32ch;
-}
-figure { margin: 0 0 12px; }
-figcaption { font-size: 12.5px; color: var(--ink-mute); margin-top: 8px; }
+  .hero { padding-block: 52px 44px; }
+  .kick { font-size: 10px; margin-bottom: 16px; }
+  .hero h1 { font-size: clamp(31px, 3.4vw, 40px); margin-bottom: 16px; max-width: 18ch; }
+  .sub { font-size: 15px; line-height: 1.6; margin-bottom: 26px; max-width: 52ch; }
 
-/* ---- dark contact band ---- */
-.contact { background: var(--dark); color: var(--dark-ink); margin-top: 80px; padding: 64px 0; }
-.contact h2 { color: var(--dark-ink); }
-.contact p { color: var(--dark-mute); }
-.contact a { color: var(--dark-ink); border-bottom-color: #4a4a55; }
-.contact a:hover { color: #fff; }
-.contact a:focus-visible { outline-color: var(--dark-ink); }
-.contact-actions { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 22px; }
+  .btn { font-size: 13.5px; padding: 12px 22px; }
 
-/* ---- footer ---- */
-.site-foot { background: var(--dark); color: var(--dark-mute); padding: 0 0 40px; font-size: 12.5px; }
-.site-foot .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .cell { padding: 18px 14px 19px 18px; }
+  .cell b { font-size: 21px; }
+  .cell span { font-size: 9px; margin-top: 7px; }
 
-/* ---- responsive ---- */
-@media (max-width: 768px) {
-  .seg { grid-template-columns: 1fr; }
-  .seg > div { padding: 16px 0; }
-  .seg p { font-size: 14px; line-height: 1.55; }
-  .eng li { font-size: 15px; }
-  .pull { padding-left: 18px; }
+  .sect { padding-block: 46px 8px; }
+  .shead { gap: 14px; margin-bottom: 20px; }
+  .snum { font-size: 11px; }
+  .shead h2 { font-size: 22px; }
 
-  /* The mark is only about 38px wide, so logo and nav fit on one line again
-     and the header does not need to wrap. */
-  .site-head { padding-block: 20px; gap: 12px; }
-  .site-head img { height: 27px; }
-  .site-nav { gap: 18px; }
-  .site-nav a { font-size: 13px; }
+  .item { padding: 19px 0; }
+  .ihead h4 { font-size: 16px; }
+  .item p { font-size: 13.5px; margin-top: 7px; }
+  .specs { font-size: 10.5px; margin-top: 9px; }
+  .st { font-size: 9.5px; }
 
-  /* Name and description ran together on one line, so the project name was
-     lost inside its own sentence. Break the description onto its own line. */
-  .work-row { flex-direction: column; align-items: flex-start; gap: 0; padding: 24px 0; }
-  .work-what { display: block; margin-top: 7px; font-size: 15px; line-height: 1.5; }
-  .work-row .status { margin-top: 8px; }
-  .work-row > span:last-child { margin-top: 12px; }
+  /* Two columns above the breakpoint, one below. The hairline between them is
+     a border on the right hand cell, so it never hangs off the last row. */
+  .seg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .seg > * { padding: 17px 24px 17px 0; }
+  .seg > *:nth-child(even) { padding-right: 0; padding-left: 24px; border-left: 1px solid var(--rule); }
+  .seg h4 { font-size: 14.5px; }
+  .seg p { font-size: 13.5px; }
 
-  .case-top { flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 36px; }
-  .sec { padding-bottom: 44px; }
-  .sec--lead { padding-top: 44px; }
-  .sec--tight { padding-bottom: 34px; }
-  .contact { padding: 48px 0; margin-top: 56px; }
+  .pull { margin: 32px 0; padding-left: 22px; font-size: 22px; line-height: 1.38; }
+
+  .contact { margin-top: 56px; padding-block: 56px 58px; }
+  .contact h2 { font-size: 22px; margin-bottom: 10px; }
+  .contact p { font-size: 13.5px; margin-bottom: 20px; }
+  .contact-actions { flex-direction: row; align-items: center; gap: 28px; }
+  .contact-actions a { font-size: 14px; }
+
+  .site-foot { font-size: 10px; padding-bottom: 34px; }
+  .site-foot .wrap { padding-top: 22px; }
 }
