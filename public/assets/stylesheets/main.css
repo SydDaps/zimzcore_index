@@ -112,10 +112,11 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   padding-block: 26px;
   border-bottom: 1px solid var(--rule);
 }
-/* The logo asset is trimmed to the artwork itself (997x156, about 6.4:1),
-   so this height is the height of the wordmark rather than the height of a
-   mostly empty square canvas. 24px gives roughly 153px of wordmark. */
-.site-head img { height: 24px; width: auto; }
+/* The mark is trimmed to the artwork itself (406x287, about 1.4:1), so this
+   height is the height of the Z rather than the height of a mostly empty
+   square canvas. 30px gives roughly 42px wide, compact enough that the nav
+   stays on one line at every width. */
+.site-head img { height: 30px; width: auto; }
 .site-logo { border-bottom: 0; }
 .site-nav { display: flex; gap: 26px; }
 .site-nav a { font-size: 14px; color: var(--ink); border-bottom: 0; }
@@ -213,10 +214,10 @@ figcaption { font-size: 12.5px; color: var(--ink-mute); margin-top: 8px; }
   .eng li { font-size: 15px; }
   .pull { padding-left: 18px; }
 
-  /* The real wordmark is about 153px wide at 24px tall, so the header has to
-     give the nav room it did not need when the logo was a 26px speck. */
+  /* The mark is only about 38px wide, so logo and nav fit on one line again
+     and the header does not need to wrap. */
   .site-head { padding-block: 20px; gap: 12px; }
-  .site-head img { height: 22px; }
+  .site-head img { height: 27px; }
   .site-nav { gap: 18px; }
   .site-nav a { font-size: 13px; }
 
