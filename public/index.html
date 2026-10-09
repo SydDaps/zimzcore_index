@@ -1,70 +1,237 @@
-<!--# set var="title" value="Zimzcore, software that solves expensive problems" -->
-<!--# set var="description" value="A Ghanaian software company building and running its own products. Fleet tracking, fact checking, digital memorials and fellowship management." -->
+<!--# set var="title" value="Zimzcore, software for how Ghanaian businesses actually work" -->
+<!--# set var="description" value="A software company in Accra. We design, build and run platforms for vehicle tracking, cold room monitoring, fact checking, digital memorials, fellowship management and national events." -->
 <!--#include virtual="/_includes/header.html" -->
 
-<section class="hero">
-  <p class="kick">Software company &middot; Accra, Ghana</p>
-  <h1>We build software that solves expensive problems.</h1>
-  <p class="sub">Fleet owners losing fuel to theft. Fellowship programmes drowning in paper
-  applications. Families with nowhere to gather after a funeral. We build the system that fixes
-  it, then we run it.</p>
-  <p class="sub">We build for clients, and we build for ourselves. Two of our own platforms are
-  live with paying customers, which is the part most software firms cannot show you.</p>
-  <a class="btn" href="https://wa.me/233557711911">Start a project</a>
+<section class="band on-night">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="kicker mono">Software company &middot; Accra, Ghana</p>
+      <h1>We build software for how Ghanaian businesses actually work.</h1>
+      <p class="lede">Vehicle tracking, cold room monitoring, fact checking, digital memorials,
+      fellowship management and national events. We design these platforms, build them and keep
+      them running after launch. Four are live today, and two of them are our own products with
+      paying customers.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="https://wa.me/233557711911">Start a project</a>
+        <a class="btn btn-ghost" href="#work">See the work</a>
+      </div>
+    </div>
+
+    <div class="showcase">
+      <a class="browser" id="show-link" href="#lokkate" aria-label="Lokkate, see details">
+        <div class="bar"><i></i><i></i><i></i><span id="show-url">app.lokkate.com/vehicles</span></div>
+        <div class="screen"><img id="show-img" src="/assets/images/work/app-desktop.webp" width="1796" height="1066" alt="Lokkate fleet dashboard with vehicles on a map of Accra"></div>
+      </a>
+      <!-- One button per project. The showcase script reads these attributes. -->
+      <div class="picker" id="picker" role="group" aria-label="Choose a project">
+        <button class="pick" type="button" data-id="lokkate" data-url="app.lokkate.com/vehicles" data-img="/assets/images/work/app-desktop.webp" data-alt="Lokkate fleet dashboard with vehicles on a map of Accra"><b>Lokkate</b><span>Fleet tracking</span><i></i></button>
+        <button class="pick" type="button" data-id="warden" data-url="warden.lokkate.com" data-img="/assets/images/work/warden.jpg" data-alt="Warden console design showing every store and cold room at a plant"><b>Warden</b><span>In development</span><i></i></button>
+        <button class="pick" type="button" data-id="kasagadi" data-url="kasagadi.ai/marketplace" data-img="/assets/images/work/kas-market.jpg" data-alt="Kasagadi marketplace of verified claims"><b>Kasagadi</b><span>Fact checking</span><i></i></button>
+        <button class="pick" type="button" data-id="live-on-forever" data-url="liveonforever.com" data-img="/assets/images/work/lof-home.jpg" data-alt="Live On Forever memorial platform homepage"><b>Live On Forever</b><span>Memorials</span><i></i></button>
+        <button class="pick" type="button" data-id="ghana-ai-summit" data-url="ghanaaisummit.com" data-img="/assets/images/work/gais-home.jpg" data-alt="Ghana AI Summit and Awards Night homepage"><b>Ghana AI Summit</b><span>Event platform</span><i></i></button>
+        <button class="pick" type="button" data-id="fellowship" data-url="EPL Ghana, course content" data-img="/assets/images/work/lms-course-content.webp" data-alt="EPL Ghana fellowship course page"><b>Fellowship</b><span>For EPL Ghana</span><i></i></button>
+      </div>
+      <a class="all" href="/work">All projects &rarr;</a>
+    </div>
+  </div>
 </section>
 
-<div class="strip">
-  <div class="cell"><b>04</b><span>Platforms</span></div>
-  <div class="cell"><b>02</b><span>In production</span></div>
-  <div class="cell"><b>01</b><span>Client built</span></div>
+<div class="proof">
+  <div class="wrap">
+    <div class="stat"><b>6</b><span>Platforms designed and built</span></div>
+    <div class="stat"><b>4</b><span>Live and open to the public today</span></div>
+    <div class="stat"><b>2</b><span>Our own products, with paying customers</span></div>
+  </div>
 </div>
 
-<section class="sect" id="what-we-do">
-  <div class="shead"><span class="snum">01</span><h2>What we do</h2></div>
+<section class="s" id="work">
+  <div class="wrap">
+    <div class="s-head">
+      <div><p class="mono">Work</p><h2>Selected work.</h2></div>
+      <p>Every screen here is from a running system. Four you can open right now, the EPL Ghana
+      fellowship platform runs behind a sign in, and Warden is in development.</p>
+    </div>
 
-  <div class="item">
-    <div class="ihead"><h4>Operational systems</h4></div>
-    <p>Work that moves through stages, with different people responsible at each one. Applications
-    that get vetted, scored and decided. Claims that get assigned, researched and published.</p>
-    <p class="specs">state machines / audit trails / role permissions</p>
-  </div>
+    <div class="products">
+      <article class="product" id="lokkate">
+        <div class="copy">
+          <div class="copy-top"><span class="chip live"><i></i>Live</span><span class="mono what">Fleet tracking</span></div>
+          <h3>Lokkate</h3>
+          <p class="problem">Fleet owners lose fuel and vehicles and cannot prove where either went. A
+          tracker in the vehicle now records every trip, and the owner can stop it from starting.</p>
+          <ul class="plus">
+            <li>GPS telemetry from physical trackers, turned into trips and driver history</li>
+            <li>Remote immobiliser for missed payments, acknowledged and audited</li>
+            <li>Cargo temperature, geofences and after hours alerts</li>
+            <li>Billing on Ghanaian payment rails, plus a native iOS app</li>
+          </ul>
+          <div class="links"><a class="ext" href="https://lokkate.com">lokkate.com &#8599;</a><a href="/work/lokkate">Case study &rarr;</a></div>
+        </div>
+        <div class="media">
+          <div class="browser crop">
+            <div class="bar"><i></i><i></i><i></i><span>lokkate.com</span></div>
+            <img src="/assets/images/work/lokkate-home.jpg" width="1440" height="900" loading="lazy" alt="Lokkate homepage with the headline No blind spots">
+          </div>
+          <div class="phones">
+            <figure><div class="phone"><img src="/assets/images/work/app-phone-live.webp" width="600" height="1304" loading="lazy" alt="Live position of a moving vehicle"></div><figcaption>Live</figcaption></figure>
+            <figure><div class="phone"><img src="/assets/images/work/app-phone-sensors.webp" width="600" height="1304" loading="lazy" alt="A parked vehicle in Osu reporting its cargo temperature"></div><figcaption>Cargo temp</figcaption></figure>
+            <figure><div class="phone"><img src="/assets/images/work/app-phone-geofence.webp" width="600" height="1304" loading="lazy" alt="Geofence alert screen"></div><figcaption>Geofence</figcaption></figure>
+          </div>
+        </div>
+      </article>
 
-  <div class="item">
-    <div class="ihead"><h4>Hardware and payments</h4></div>
-    <p>Systems that touch the physical world and real money. GPS trackers streaming position data
-    off vehicles. Mobile money collection, subscription billing and payouts.</p>
-    <p class="specs">GPS telemetry / mobile money / reconciliation</p>
-  </div>
+      <article class="product" id="warden">
+        <div class="copy">
+          <div class="copy-top"><span class="chip dev"><i></i>In development</span><span class="mono what">Storage monitoring</span></div>
+          <h3>Warden</h3>
+          <p class="problem">Stock in warehouses and cold rooms spoils when temperature or humidity
+          drifts and nobody notices until it is too late. Warden puts wireless sensors in every
+          section of a store and raises an alarm the moment a reading crosses its limit.</p>
+          <ul class="plus">
+            <li>Battery powered temperature, humidity and door sensors through an on site gateway</li>
+            <li>A live floor plan of every store, with a heat map across its sections</li>
+            <li>Alarms by SMS and email, with acknowledgement and a response log</li>
+            <li>A space planner that places sensors and prices the kit before installation</li>
+          </ul>
+        </div>
+        <div class="media">
+          <div class="browser crop">
+            <div class="bar"><i></i><i></i><i></i><span>warden.lokkate.com</span></div>
+            <img src="/assets/images/work/warden.jpg" width="1440" height="900" loading="lazy" alt="Warden console design: stores and cold rooms on live floor plans, one humidity alarm">
+          </div>
+        </div>
+      </article>
 
-  <div class="item">
-    <div class="ihead"><h4>End to end delivery</h4></div>
-    <p>From the first conversation to a running system with customers on it. We design it, build
-    it, deploy it and keep it alive, so you talk to the people writing the code.</p>
-    <p class="specs">Rails / Kamal / iOS</p>
+      <article class="product" id="kasagadi">
+        <div class="copy">
+          <div class="copy-top"><span class="chip live"><i></i>Live</span><span class="mono what">Fact checking</span></div>
+          <h3>Kasagadi</h3>
+          <p class="problem">A claim can reach hundreds of thousands of people on WhatsApp in a day.
+          Kasagadi gives accredited checkers a place to investigate it and publishes each verdict
+          with the evidence behind it. We built it for the Ghana Anti-Disinformation Coalition
+          Project, run by Penplusbytes with funding from the Norwegian Ministry of Foreign
+          Affairs.</p>
+          <ul class="plus">
+            <li>A claim state machine from submission to publication, every step recorded</li>
+            <li>Invitation only onboarding for accredited fact checkers</li>
+            <li>Evidence stored as records on each verdict, not pasted links</li>
+            <li>Public marketplace filterable by verdict, topic and region</li>
+          </ul>
+          <div class="links"><a class="ext" href="https://kasagadi.ai">kasagadi.ai &#8599;</a><a href="/work/kasagandi-ai">Case study &rarr;</a></div>
+        </div>
+        <div class="media">
+          <div class="browser crop back">
+            <div class="bar"><i></i><i></i><i></i><span>kasagadi.ai</span></div>
+            <img src="/assets/images/work/kas-home.jpg" width="1440" height="900" loading="lazy" alt="Kasagadi homepage, Fighting Disinformation Marketplace">
+          </div>
+          <div class="browser crop front">
+            <div class="bar"><i></i><i></i><i></i><span>kasagadi.ai/marketplace</span></div>
+            <img src="/assets/images/work/kas-market.jpg" width="1440" height="900" loading="lazy" alt="Kasagadi marketplace of verified claims with False and Misleading verdicts">
+          </div>
+        </div>
+      </article>
+
+      <article class="product" id="live-on-forever">
+        <div class="copy">
+          <div class="copy-top"><span class="chip live"><i></i>Live</span><span class="mono what">Digital memorials</span></div>
+          <h3>Live On Forever</h3>
+          <p class="problem">When a Ghanaian family is spread across four countries, funeral
+          contributions end up in a notebook and the photos stay on private phones. Live On Forever
+          gives the family one page that records both.</p>
+          <ul class="plus">
+            <li>Contributions collected in the platform, paid out to the family's own account</li>
+            <li>Memorial pages with custom sections, shaped to the person</li>
+            <li>Moderated tributes and condolences</li>
+          </ul>
+          <div class="links"><a class="ext" href="https://liveonforever.com">liveonforever.com &#8599;</a><a href="/work/live-on-forever">Case study &rarr;</a></div>
+        </div>
+        <div class="media">
+          <div class="browser crop">
+            <div class="bar"><i></i><i></i><i></i><span>liveonforever.com</span></div>
+            <img src="/assets/images/work/lof-home.jpg" width="1440" height="900" loading="lazy" alt="Live On Forever homepage: Honoring Memory, Celebrating Life, Preserving Heritage">
+          </div>
+        </div>
+      </article>
+
+      <article class="product" id="ghana-ai-summit">
+        <div class="copy">
+          <div class="copy-top"><span class="chip live"><i></i>Live</span><span class="mono what">For Data Nyansa</span></div>
+          <h3>Ghana AI Summit</h3>
+          <p class="problem">A national summit has to take registrations, award nominations and paper
+          submissions, publish a programme and keep its news current, then do it all again the
+          following year. One platform handles every edition.</p>
+          <ul class="plus">
+            <li>The 2025, 2026 and 2027 summits run on the same platform</li>
+            <li>Registration, award nominations and a call for papers</li>
+            <li>Programme and people pages for speakers, moderators, facilitators and sponsors</li>
+            <li>A directory of Ghanaian AI datasets, projects, opportunities and publications</li>
+          </ul>
+          <div class="links"><a class="ext" href="https://ghanaaisummit.com">ghanaaisummit.com &#8599;</a></div>
+        </div>
+        <div class="media">
+          <div class="browser crop">
+            <div class="bar"><i></i><i></i><i></i><span>ghanaaisummit.com</span></div>
+            <img src="/assets/images/work/gais-home.jpg" width="1440" height="900" loading="lazy" alt="Ghana Artificial Intelligence Summit and Awards Night homepage, 30 to 31 March 2027">
+          </div>
+        </div>
+      </article>
+
+      <article class="product" id="fellowship">
+        <div class="copy">
+          <div class="copy-top"><span class="chip del"><i></i>Delivered</span><span class="mono what">For EPL Ghana</span></div>
+          <h3>Fellowship Management</h3>
+          <p class="problem">Hundreds of applicants, several interview rounds and a spreadsheet holding
+          it together. We replaced it with one system that runs from first application to graduating
+          fellow.</p>
+          <ul class="plus">
+            <li>Multi stage pipeline with per stage scoring and multiple assessors</li>
+            <li>Nine user roles, each with its own permissions and views</li>
+            <li>Courses, quizzes with automatic marking, and per lesson discussions</li>
+          </ul>
+          <div class="links"><a href="/work/fellowship-lms">Case study &rarr;</a></div>
+        </div>
+        <div class="media">
+          <div class="browser crop back">
+            <div class="bar"><i></i><i></i><i></i><span>EPL Ghana &middot; Courses</span></div>
+            <img src="/assets/images/work/lms-catalogue.webp" width="1600" height="1720" loading="lazy" alt="Course catalogue for the EPL Ghana Public Service Fellowship">
+          </div>
+          <div class="browser crop front">
+            <div class="bar"><i></i><i></i><i></i><span>EPL Ghana &middot; Course content</span></div>
+            <img src="/assets/images/work/lms-course-content.webp" width="1600" height="1065" loading="lazy" alt="Data-Driven Decision Making course with four lessons and quizzes">
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
-<section class="sect">
-  <div class="shead"><span class="snum">02</span><h2>Our work</h2></div>
-
-  <div class="item">
-    <div class="ihead"><h4><a href="/work/lokkate">Lokkate</a></h4><span class="st st-live">Live</span></div>
-    <p>Drivers lie about where they have been. Now the vehicle answers for itself.</p>
+<section class="s" id="how">
+  <div class="wrap">
+    <div class="s-head">
+      <div><p class="mono">How we work</p><h2>The team that builds it also runs it.</h2></div>
+      <p>We run our own products every day, so we build every system expecting to maintain it
+      ourselves. You work with that same team.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="mono">Step 1</span><h3>Understand the work</h3><p>Who does what, in what order, and where it goes wrong today. You talk directly to the engineers.</p></div>
+      <div class="step"><span class="mono">Step 2</span><h3>Build the system</h3><p>Stages, roles, payments and hardware modelled the way your business actually runs. Every action recorded.</p></div>
+      <div class="step"><span class="mono">Step 3</span><h3>Run it</h3><p>We deploy it, monitor it and keep improving it once real people are using it.</p></div>
+    </div>
   </div>
+</section>
 
-  <div class="item">
-    <div class="ihead"><h4><a href="/work/live-on-forever">Live On Forever</a></h4><span class="st st-live">Live</span></div>
-    <p>A place for a family to grieve together when they are scattered across the world.</p>
-  </div>
-
-  <div class="item">
-    <div class="ihead"><h4><a href="/work/kasagandi-ai">Kasagandi AI</a></h4><span class="st st-build">In development</span></div>
-    <p>A rumour spreads in a day. Checking it properly takes a week and nobody pays for it.</p>
-  </div>
-
-  <div class="item">
-    <div class="ihead"><h4><a href="/work/fellowship-lms">Fellowship Management</a></h4><span class="st st-build">Delivered</span></div>
-    <p>Hundreds of applicants, several interview rounds, and a spreadsheet holding it together.</p>
+<section class="s" id="services">
+  <div class="wrap">
+    <div class="s-head">
+      <div><p class="mono">Services</p><h2>What we build.</h2></div>
+      <p>If your problem involves people at different stages, physical devices or money moving, we
+      have probably built something close to it already.</p>
+    </div>
+    <div class="caps">
+      <div class="cap"><h3>Operational systems</h3><p>Work that moves through stages with different people responsible at each one. Applications vetted and decided. Claims assigned, researched and published.</p><span class="specs">state machines / audit trails / role permissions</span></div>
+      <div class="cap"><h3>Hardware and payments</h3><p>Systems that touch the physical world and real money. GPS trackers on vehicles, sensors in cold rooms. Mobile money collection, subscriptions and payouts.</p><span class="specs">GPS telemetry / sensors / mobile money / reconciliation</span></div>
+      <div class="cap"><h3>End to end delivery</h3><p>From the first conversation to a running system with customers on it. We design, build, deploy and maintain it.</p><span class="specs">Rails / Kamal / iOS</span></div>
+    </div>
   </div>
 </section>
 

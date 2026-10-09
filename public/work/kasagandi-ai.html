@@ -1,54 +1,92 @@
-<!--# set var="title" value="Kasagandi AI, fact checking for Ghana, Zimzcore" -->
+<!--# set var="title" value="Kasagadi, fact checking for Ghana, Zimzcore" -->
 <!--# set var="description" value="A Ghana focused fact checking marketplace where the public submits claims and accredited checkers publish verdicts with evidence." -->
 <!--#include virtual="/_includes/header.html" -->
 
-<section class="hero">
-  <p class="kick">03 / Work &middot; In development</p>
-  <h1>Kasagandi AI</h1>
-  <p class="sub">Somewhere between a rumour and the truth there is a week of unpaid work. This is
-  the system that organises it.</p>
-</section>
-
-<section class="sect">
-  <div class="shead"><span class="snum">01</span><h2>The problem</h2></div>
-  <p class="sub">A claim goes around Ghanaian WhatsApp and by the evening a few hundred thousand
-  people have seen it. Checking it properly takes days of real research, and the people capable of
-  doing that work have no route to it and no way to be paid for it.</p>
-  <p class="sub">So the checking either does not happen, or it happens in a newsroom nobody outside
-  can see. The verdict, when it exists, arrives with no evidence attached and no way to tell how it
-  was reached. Asking the public to trust a bare conclusion is exactly the problem that started
-  this.</p>
-</section>
-
-<section class="sect">
-  <div class="shead"><span class="snum">02</span><h2>Who it is for</h2></div>
-  <div class="seg">
-    <div><h4>Members of the public</h4><p>Saw something suspicious and wants to know whether it is true.</p></div>
-    <div><h4>Accredited fact checkers</h4><p>Has the skill to investigate. Wants assignments and a record of the work.</p></div>
-    <div><h4>Editors and administrators</h4><p>Triages what comes in, assigns it, and decides what gets published.</p></div>
-    <div><h4>Anyone reading</h4><p>Browses published verdicts without an account, and can see the evidence behind each one.</p></div>
+<section class="band on-night case-hero">
+  <div class="wrap">
+    <div>
+      <p class="kicker mono">Fact checking &middot; Live</p>
+      <h1>Kasagadi</h1>
+      <p class="lede">Somewhere between a rumour and the truth there is a week of unpaid work. This
+      is the system that organises it. Built for the Ghana Anti-Disinformation Coalition Project,
+      run by Penplusbytes with funding from the Norwegian Ministry of Foreign Affairs.</p>
+      <div class="links"><a class="ext" href="https://kasagadi.ai">kasagadi.ai &#8599;</a></div>
+    </div>
+    <div class="case-shot">
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><span>kasagadi.ai/marketplace</span></div>
+        <img src="/assets/images/work/kas-market.jpg" width="1440" height="900" alt="Kasagadi marketplace listing verified claims filtered by verdict and topic">
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="sect">
-  <div class="shead"><span class="snum">03</span><h2>What we built</h2></div>
-  <p class="sub">A marketplace with three roles. The public submits claims. Administrators triage
-  them and assign them to accredited fact checkers. Checkers research, attach their evidence, and
-  submit a verdict. An administrator approves it, and only then does it appear publicly.</p>
-  <p class="sub">The whole journey from a suspicious headline to a verdict with its research trail
-  attached lives in one auditable system, so a reader can see not only the conclusion but how it
-  was reached.</p>
-</section>
+<div class="wrap case">
+  <section class="part">
+    <p class="mono">Problem</p>
+    <div class="prose">
+      <h2>The problem</h2>
+      <p>A claim goes around Ghanaian WhatsApp and by the evening a few hundred thousand people have
+      seen it. Checking it properly takes days of real research, and the people capable of doing
+      that work have no route to it and no way to be paid for it.</p>
+      <p>So the checking either does not happen, or it happens in a newsroom nobody outside can see.
+      The verdict, when it exists, arrives with no evidence attached and no way to tell how it was
+      reached. Asking the public to trust a bare conclusion is exactly the problem that started
+      this.</p>
+    </div>
+  </section>
 
-<section class="sect">
-  <div class="shead"><span class="snum">04</span><h2>Notable engineering</h2></div>
-  <div class="item"><p>A claim state machine governing submission, assignment, verdict and publication, with every transition recorded</p></div>
-  <div class="item"><p>Three role types over one identity, driving both routing and authorisation</p></div>
-  <div class="item"><p>Invitation only onboarding for fact checkers, since accreditation is the whole value</p></div>
-  <div class="item"><p>An audit log covering every action taken on a claim</p></div>
-  <div class="item"><p>Evidence attached to verdicts as first class records rather than pasted links</p></div>
-</section>
+  <section class="part">
+    <p class="mono">Audience</p>
+    <div class="prose">
+      <h2>Who it is for</h2>
+      <div class="who">
+        <div><h3>Members of the public</h3><p>Saw something suspicious and wants to know whether it is true.</p></div>
+        <div><h3>Accredited fact checkers</h3><p>Has the skill to investigate. Wants assignments and a record of the work.</p></div>
+        <div><h3>Editors and administrators</h3><p>Triages what comes in, assigns it, and decides what gets published.</p></div>
+        <div><h3>Anyone reading</h3><p>Browses published verdicts without an account, and can see the evidence behind each one.</p></div>
+      </div>
+    </div>
+  </section>
 
-<p class="pull">A verdict nobody can check is just another rumour with better manners.</p>
+  <section class="part">
+    <p class="mono">Solution</p>
+    <div class="prose">
+      <h2>What we built</h2>
+      <p>A marketplace with three roles. The public submits claims. Administrators triage them and
+      assign them to accredited fact checkers. Checkers research, attach their evidence, and submit
+      a verdict. An administrator approves it, and only then does it appear publicly.</p>
+      <p>The whole journey from a suspicious headline to a verdict with its research trail attached
+      lives in one auditable system, so a reader can see not only the conclusion but how it was
+      reached.</p>
+    </div>
+  </section>
+
+  <section class="part">
+    <p class="mono">Engineering</p>
+    <div class="prose">
+      <h2>Notable engineering</h2>
+      <ul class="plus">
+        <li>A claim state machine governing submission, assignment, verdict and publication, with every transition recorded</li>
+        <li>Three role types over one identity, driving both routing and authorisation</li>
+        <li>Invitation only onboarding for fact checkers, since accreditation is the whole value</li>
+        <li>An audit log covering every action taken on a claim</li>
+        <li>Evidence attached to verdicts as first class records rather than pasted links</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="gallery">
+    <figure>
+      <div class="browser crop">
+        <div class="bar"><i></i><i></i><i></i><span>kasagadi.ai</span></div>
+        <img src="/assets/images/work/kas-home.jpg" width="1440" height="900" loading="lazy" alt="Kasagadi homepage with a live ticker of recent verdicts">
+      </div>
+      <figcaption>The public homepage, with a live ticker of recent verdicts.</figcaption>
+    </figure>
+  </div>
+
+  <blockquote class="pull">A verdict nobody can check is just another rumour with better manners.</blockquote>
+</div>
 
 <!--#include virtual="/_includes/footer.html" -->

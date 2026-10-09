@@ -1,18 +1,29 @@
-/* Zimzcore, Instrument direction.
-   Structured, bordered, corporate. Energy comes from precision, not decoration.
+/* Zimzcore, Showcase direction.
+   A plum night band carries the brand and the one bold moment on each page;
+   everything below it is quiet: white space, hairlines, and real screenshots
+   of the systems we built doing the arguing.
 
-   Three rules hold the whole sheet together:
-   1. Mobile first. Every base rule is the 320px rule. The single media query
-      at 768px is the step up, never the correction.
-   2. No animation, no transition, no transform. Anywhere. This is deliberate.
-      A hover may change colour and nothing else.
-   3. Purple is a label colour. Never a fill, never a wash, no gradients, no
-      shadows, no tinted panels. */
+   Rules that hold the sheet together:
+   1. Mobile first. Base rules are the phone rules; media queries step up.
+   2. Every colour is a token on :root, redefined once for dark mode. The night
+      bands stay night in both themes.
+   3. Motion is small and purposeful: the homepage showcase cross fades, cards
+      lift on hover. All of it is switched off under prefers-reduced-motion.
+   4. Vertical padding on a .wrap uses padding-block, never the `padding`
+      shorthand, which would wipe out the side gutter. */
 
 /* ---- fonts ---- */
-/* IBM Plex Sans arrives from Google as one variable file, wght axis 100 to 700,
-   default 400, so 400, 500 and 600 all come from this one face. IBM Plex Mono
-   is still static, one file per weight. Latin subset only, self hosted. */
+/* Self hosted, latin subset. Archivo is variable on weight and width; the
+   display face runs it wide. Plex Sans is variable on weight. Plex Mono is
+   static, one file per weight. */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/assets/fonts/archivo-latin-var.woff2') format('woff2');
+  font-weight: 500 900;
+  font-stretch: 100% 125%;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: 'IBM Plex Sans';
   src: url('/assets/fonts/ibm-plex-sans-latin-var.woff2') format('woff2');
@@ -37,406 +48,436 @@
 
 /* ---- tokens ---- */
 :root {
-  --bg: #ffffff;
-  --ink: #0e0e13;
-  --ink-2: #55556a;
-  --ink-3: #737388;
-  --rule: #e8e8ef;
-  --accent: #6f0697;
+  --bg: #f8f6fb;
+  --surface: #ffffff;
+  --ink: #150a1d;
+  --ink-2: #4d4359;
+  --ink-3: #6b6177;
+  --rule: #e5dfec;
+  --brand: #6f0697;
+  --brand-ink: #6f0697;
+  --gold: #e8a531;
+  --gold-hover: #ffc35c;
+  --gold-ink: #8a5600;
   --live: #1a7f4b;
-  --btn: #0e0e13;
+  --frame: #ffffff;
+  --frame-bar: #f0ecf4;
+  --shadow: 0 30px 60px -28px rgba(40, 10, 60, .35);
 
-  /* Derived from --btn for the dark band. Not new brand colours: the band is
-     the only place text sits on ink, and it needs a muted step and a hairline
-     that read correctly against it. */
-  --on-dark: #ffffff;
-  --on-dark-2: #9c9caf;
-  --rule-dark: #262630;
+  /* Night bands: the header, the hero and the contact band. Same in both
+     themes, so they are not redefined below. */
+  --night: #1e0a2b;
+  --night-2: #2b1140;
+  --night-rule: #43255a;
+  --on-night: #f7f1fb;
+  --on-night-2: #c7b6d6;
 
+  --display: 'Archivo', 'Arial Narrow', system-ui, sans-serif;
   --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --max: 1040px;
-  --gutter: 18px;
+  --max: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0713;
+    --surface: #170d1f;
+    --ink: #f4eef9;
+    --ink-2: #bdb0cb;
+    --ink-3: #9a8daa;
+    --rule: #2a1f35;
+    --brand: #9b3fd0;
+    --brand-ink: #c58cf0;
+    --gold-ink: #f0b445;
+    --live: #4cc98a;
+    --frame: #22172b;
+    --frame-bar: #2a1f35;
+    --shadow: 0 30px 60px -28px rgba(0, 0, 0, .8);
+    --night: #1a0926;
+    --night-2: #26103a;
+    --night-rule: #3d2154;
+    color-scheme: dark;
+  }
 }
 
 /* ---- reset ---- */
 *, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; }
-img { max-width: 100%; height: auto; display: block; }
-
+html { scroll-behavior: smooth; }
 body {
+  margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--sans);
-  font-size: 13px;
-  line-height: 1.6;
-  /* A long unbroken token, a URL in copy or a wide word in a narrow grid cell
-     is the usual source of horizontal overflow at 320px. Break it rather than
-     clipping the page with overflow-x: hidden, which hides the bug instead of
-     fixing it. */
+  font: 400 16px/1.6 var(--sans);
+  /* Break a long token rather than let it widen the page at 320px. */
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-stretch: 112%;
+  line-height: 1.04;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+  margin: 0;
+}
 
-/* ---- container ---- */
-.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.wrap { max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.mono { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 
-/* Any rule that needs vertical padding on a .wrap element must use the
-   padding-block or padding-top longhand. The `padding` shorthand resets the
-   horizontal half and wipes out the gutter, which pins content to x=0 on a
-   phone. This has bitten this sheet once already. */
-
-/* ---- links ---- */
-a { color: var(--accent); }
-a:hover { color: var(--ink); }
-/* Focus is the one visual affordance that must never be subtle. */
-a:focus-visible,
-button:focus-visible,
-[tabindex]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 2px;
+/* The real logo, used as a mask so it can take the gold on night. */
+.mark {
+  display: inline-block;
+  width: 34px;
+  aspect-ratio: 406 / 287;
+  background: var(--gold);
+  -webkit-mask: url('/assets/images/zimzcore-mark.png') center / contain no-repeat;
+          mask: url('/assets/images/zimzcore-mark.png') center / contain no-repeat;
 }
 
 /* ---- header ---- */
-/* Full bleed element with a .wrap inside, so the hairline runs the whole width
-   while the mark and nav stay on the content grid. One row at every width down
-   to 320px, which the icon mark rather than a wordmark makes possible. */
-.site-head { border-bottom: 1px solid var(--rule); }
+.site-head { background: var(--night); color: var(--on-night); }
 .site-head .wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  min-height: 54px;
+  gap: 16px;
+  padding-block: 22px;
 }
-.site-mark { display: flex; align-items: center; flex: 0 0 auto; }
-/* The mark is trimmed to the artwork (406x287, about 1.4:1), so this is the
-   height of the Z, not of a mostly empty canvas. 22px is roughly 31px wide. */
-.site-mark img { height: 22px; width: auto; }
-.site-nav { display: flex; align-items: center; gap: 15px; flex: 0 1 auto; }
-.site-nav a {
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  text-decoration: none;
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 120%;
+  font-size: 19px;
+  letter-spacing: .02em;
+}
+.site-nav { display: flex; align-items: center; gap: clamp(14px, 3vw, 30px); font-size: 14px; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 40px; color: var(--on-night-2); text-decoration: none; transition: color .2s; }
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--on-night); }
+.site-nav .pill {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;          /* tap target, not visual height */
-  font-size: 12.5px;
-  font-weight: 500;
-  letter-spacing: -.006em;
-  color: var(--ink);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.site-nav a:hover { color: var(--accent); }
-
-/* ---- hero ---- */
-.hero { padding-block: 26px 24px; border-bottom: 1px solid var(--rule); }
-.kick {
-  font-family: var(--mono);
-  font-weight: 500;
-  font-size: 9.5px;
-  line-height: 1.4;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin: 0 0 13px;
-}
-.hero h1 {
-  font-size: 27px;
-  line-height: 1.2;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--night);
   font-weight: 600;
-  letter-spacing: -.033em;
-  margin: 0 0 12px;
-  max-width: 20ch;
+  transition: background-color .2s;
 }
-.sub {
-  font-size: 13px;
-  line-height: 1.62;
-  color: var(--ink-2);
-  margin: 0 0 20px;
-  max-width: 46ch;
-}
+.site-nav .pill:hover { background: var(--gold-hover); color: var(--night); }
 
-/* ---- button ---- */
-/* Sans, not mono, and no arrow. The mono arrow button was called gimmicky and
-   it was. Flat fill, no shadow, no transition. */
+/* ---- buttons ---- */
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: 40px;
-  padding: 11px 19px;
-  background: var(--btn);
-  color: #fff;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -.006em;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
   text-decoration: none;
-  border: 0;
-  border-radius: 4px;
-  cursor: pointer;
+  transition: background-color .2s, border-color .2s;
 }
-.btn:hover { background: #2a2a35; color: #fff; }
-.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-gold { background: var(--gold); color: var(--night); }
+.btn-gold:hover { background: var(--gold-hover); }
+.btn-ghost { border: 1px solid var(--night-rule); color: var(--on-night); }
+.btn-ghost:hover { border-color: var(--on-night-2); }
 
-/* ---- stat strip ---- */
-/* Three cells, vertical hairlines between them, sits directly under the hero.
-   The figures are real, which is why tabular numerals earn their place: they
-   are figures, not decoration imitating figures. minmax(0, 1fr) rather than
-   1fr so a long caption cannot push the grid wider than its container. */
-.strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-bottom: 1px solid var(--rule);
-}
-.cell {
+/* ---- device frames ---- */
+.browser { display: block; background: var(--frame); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; }
+.browser .bar { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--frame-bar); border-bottom: 1px solid var(--rule); }
+.browser .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); flex: none; }
+.browser .bar span {
   min-width: 0;
-  padding: 13px 10px 14px 13px;
-  border-left: 1px solid var(--rule);
-}
-.cell:first-child { border-left: 0; padding-left: 0; }
-.cell b {
-  display: block;
-  font-family: var(--mono);
-  font-size: 17px;
-  font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -.01em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink);
-}
-.cell span {
-  display: block;
-  margin-top: 6px;
-  font-family: var(--mono);
-  font-weight: 400;
-  font-size: 8.5px;
-  line-height: 1.35;
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  margin-inline: auto;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--frame);
   color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.browser img { width: 100%; }
+.browser.crop img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+.on-night .browser { border-color: var(--night-rule); }
+.phone { background: #0b0610; border-radius: 20px; padding: 4px; box-shadow: var(--shadow); }
+.phone img { width: 100%; border-radius: 16px; }
+
+/* ---- night band (hero on every page) ---- */
+.band { background: var(--night); color: var(--on-night); overflow: hidden; }
+.kicker { color: var(--gold); margin: 0 0 20px; }
+.kicker a { color: inherit; }
+.band h1 { font-size: clamp(38px, 5.6vw, 70px); font-weight: 850; }
+.lede { color: var(--on-night-2); font-size: clamp(16px, 1.5vw, 18px); max-width: 32em; margin: 22px 0 30px; }
+
+/* homepage hero */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+  padding-block: clamp(24px, 6vw, 64px) 0;
+}
+.hero-copy { padding-bottom: clamp(8px, 4vw, 48px); }
+.hero-copy h1 { font-size: clamp(38px, 4.4vw, 60px); }
+
+/* Showcase: one window, any number of projects. Projects come from the
+   picker buttons' data attributes, so adding one is one button in the HTML. */
+.showcase { display: grid; gap: 14px; min-width: 0; padding-bottom: clamp(40px, 6vw, 72px); }
+.screen { position: relative; aspect-ratio: 16 / 10; background: var(--night-2); }
+.screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: opacity .45s ease; }
+.screen img.out { opacity: 0; }
+.picker { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; padding-bottom: 2px; }
+.picker::-webkit-scrollbar { display: none; }
+.pick {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  gap: 2px;
+  min-width: 132px;
+  padding: 10px 12px 12px;
+  overflow: hidden;
+  border: 1px solid var(--night-rule);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--on-night-2);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: border-color .2s, background-color .2s;
+}
+.pick b { color: var(--on-night); font-weight: 600; font-size: 14px; }
+.pick span { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+.pick:hover { border-color: var(--on-night-2); }
+.pick[aria-pressed="true"] { background: var(--night-2); border-color: var(--gold); }
+.pick i { position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: var(--gold); }
+.all { justify-self: end; display: inline-flex; align-items: center; min-height: 40px; color: var(--on-night-2); font-size: 13px; text-decoration: none; }
+.all:hover { color: var(--on-night); }
+
+/* ---- proof strip ---- */
+.proof { background: var(--surface); border-bottom: 1px solid var(--rule); }
+.proof .wrap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.stat { display: grid; gap: 4px; align-content: start; padding: 20px 12px 18px; border-left: 1px solid var(--rule); }
+.stat:first-child { padding-left: 0; border-left: 0; }
+.stat b { font-family: var(--display); font-stretch: 120%; font-weight: 800; font-size: 32px; line-height: 1; font-variant-numeric: tabular-nums; color: var(--brand-ink); }
+.stat span { color: var(--ink-2); font-size: 13px; line-height: 1.4; }
 
 /* ---- sections ---- */
-.sect { padding-block: 28px 6px; }
-.shead { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; }
-.snum {
-  flex: 0 0 auto;
-  font-family: var(--mono);
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: .06em;
-  color: var(--accent);
-}
-.shead h2 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -.022em;
-  margin: 0;
-  min-width: 0;
-}
+.s { padding-block: clamp(64px, 9vw, 112px); }
+.s + .s { padding-top: 0; }
+.s-head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px 48px; align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
+.s-head .mono { color: var(--brand-ink); margin: 0 0 14px; }
+.s-head h2 { font-size: clamp(32px, 4.4vw, 54px); font-weight: 800; }
+.s-head p { margin: 0; color: var(--ink-2); max-width: 34em; }
 
-/* ---- items ---- */
-/* One row pattern serves the capabilities list, the work list and the case
-   study engineering list: title left, optional status right, description
-   below, optional mono spec line under that. */
-.item { padding: 15px 0; border-top: 1px solid var(--rule); }
-.item:last-child { border-bottom: 1px solid var(--rule); }
-.ihead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.ihead h4 {
-  font-size: 14.5px;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -.012em;
-  margin: 0;
-  min-width: 0;
-}
-.ihead a { color: var(--ink); text-decoration: none; }
-.ihead a:hover { color: var(--accent); }
-.item p {
-  font-size: 12.5px;
-  line-height: 1.58;
-  color: var(--ink-2);
-  margin: 6px 0 0;
-  max-width: 60ch;
-}
-.specs {
-  font-family: var(--mono);
-  font-weight: 400;
-  font-size: 9.5px;
-  line-height: 1.5;
-  letter-spacing: .02em;
-  color: var(--ink-3);
-  margin: 8px 0 0;
-}
-/* A plain line of text, not chips. The boxed spec chips were called gimmicky. */
+/* ---- product rows ---- */
+.products { display: grid; gap: clamp(72px, 10vw, 128px); }
+.product { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; scroll-margin-top: 24px; }
+.copy { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.copy-top { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.copy-top .what { color: var(--ink-3); }
+.copy h3 { font-size: clamp(32px, 3.6vw, 46px); font-weight: 800; }
+.copy .problem { margin: 0; color: var(--ink-2); font-size: 17px; }
 
-/* ---- status labels ---- */
-/* No dot, and nothing pulses. A blinking dot does not mean anything is being
-   monitored, so it is not here. */
-.st {
-  flex: 0 0 auto;
-  font-family: var(--mono);
-  font-weight: 500;
-  font-size: 9px;
-  line-height: 1.4;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--ink-3);
-}
-.st-live { color: var(--live); }
-.st-build { color: var(--ink-2); }
+.plus { margin: 0; padding: 16px 0 0; list-style: none; display: grid; gap: 8px; border-top: 1px solid var(--rule); }
+.plus li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px; color: var(--ink-2); font-size: 15px; line-height: 1.5; }
+.plus li::before { content: "+"; font-family: var(--mono); color: var(--brand-ink); }
 
-/* ---- case study audience segments ---- */
-.seg { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--rule); }
-.seg > * { min-width: 0; padding: 13px 0; border-bottom: 1px solid var(--rule); }
-.seg h4 {
-  font-size: 13.5px;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -.012em;
-  margin: 0 0 4px;
-}
-.seg p {
-  font-size: 12.5px;
-  line-height: 1.58;
-  color: var(--ink-2);
-  margin: 0;
-  max-width: none;
-}
-
-/* ---- pull quote ---- */
-.pull {
-  margin: 22px 0;
-  padding-left: 16px;
-  border-left: 2px solid var(--accent);
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -.02em;
-  color: var(--ink);
-  max-width: 34ch;
-}
-
-/* ---- contact band ---- */
-/* Full bleed dark at the foot of every page. Ink, not purple. */
-.contact {
-  background: var(--btn);
-  color: var(--on-dark);
-  margin-top: 34px;
-  padding-block: 32px 34px;
-}
-.contact h2 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -.022em;
-  color: var(--on-dark);
-  margin: 0 0 8px;
-  max-width: 24ch;
-}
-.contact p {
-  font-size: 12.5px;
-  line-height: 1.58;
-  color: var(--on-dark-2);
-  margin: 0 0 14px;
-  max-width: 48ch;
-}
-.contact-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-.contact-actions a {
+.links { display: flex; flex-wrap: wrap; gap: 0 22px; }
+.links a {
   display: inline-flex;
   align-items: center;
   min-height: 40px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -.006em;
-  color: var(--on-dark);
+  color: var(--brand-ink);
+  font-weight: 600;
+  font-size: 14.5px;
   text-decoration: none;
-  border-bottom: 1px solid #4a4a58;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
 }
-.contact-actions a:hover { color: var(--on-dark); border-bottom-color: var(--on-dark); }
-.contact a:focus-visible { outline-color: var(--on-dark); }
+.links a:hover { border-color: currentColor; }
+.links .ext { color: var(--ink); }
 
-/* ---- footer ---- */
-.site-foot {
-  background: var(--btn);
-  color: var(--on-dark-2);
-  padding-bottom: 26px;
-  font-family: var(--mono);
-  font-weight: 400;
-  font-size: 9.5px;
-  line-height: 1.5;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+.chip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.chip i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.live { color: var(--live); }
+.chip.del { color: var(--brand-ink); }
+.chip.dev { color: var(--gold-ink); }
+
+.media { position: relative; min-width: 0; }
+.media .back { width: 88%; margin-left: auto; }
+.media .front { position: relative; width: 92%; margin-top: -40%; }
+.phones { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(8px, 1.6vw, 18px); width: 92%; margin: -16% 0 0 auto; }
+.phones figure { margin: 0; display: grid; gap: 8px; }
+.phones figcaption { color: var(--ink-3); font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; text-align: center; }
+
+/* ---- how we work ---- */
+.steps { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 2px solid var(--ink); }
+.step { display: grid; gap: 10px; align-content: start; padding-block: 22px; }
+.step + .step { border-top: 1px solid var(--rule); }
+.step .mono { color: var(--ink-3); }
+.step h3 { font-size: 24px; font-weight: 750; }
+.step p { margin: 0; color: var(--ink-2); }
+
+/* ---- services ---- */
+.caps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.cap { display: grid; gap: 10px; align-content: start; padding-top: 22px; border-top: 1px solid var(--rule); }
+.cap h3 { font-size: 22px; font-weight: 750; }
+.cap p { margin: 0; color: var(--ink-2); }
+.cap .specs { color: var(--ink-3); font-family: var(--mono); font-size: 12px; }
+
+/* ---- work index ---- */
+.grid-work { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.tile {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  padding: 14px 14px 20px;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color .2s, transform .25s cubic-bezier(.2, .7, .2, 1);
 }
-/* padding-top longhand, so the .wrap gutter survives. */
-.site-foot .wrap {
+a.tile:hover { border-color: var(--brand); transform: translateY(-3px); }
+.tile .browser { box-shadow: none; }
+.tile-body { display: grid; gap: 8px; padding-inline: 6px; }
+.tile h2 { font-size: 26px; font-weight: 800; }
+.tile p { margin: 0; color: var(--ink-2); font-size: 15px; }
+.tile .go { color: var(--brand-ink); font-weight: 600; font-size: 14px; }
+
+/* ---- case study ---- */
+.case-hero .wrap { display: grid; gap: clamp(28px, 4vw, 48px); padding-block: clamp(24px, 6vw, 64px) 0; }
+.case-hero .lede { margin-bottom: 0; }
+.case-hero .links a, .case-hero .links .ext { color: var(--gold); }
+.case-shot { margin-bottom: -1px; }
+.case-shot .browser { border-radius: 12px 12px 0 0; border-bottom: 0; box-shadow: none; }
+.case-shot.with-phones { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+
+.case { display: grid; gap: clamp(48px, 7vw, 88px); padding-block: clamp(56px, 8vw, 96px); }
+.part { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px 48px; }
+.part > .mono { color: var(--brand-ink); padding-top: 6px; }
+.part h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 800; margin-bottom: 4px; }
+.prose { display: grid; gap: 16px; min-width: 0; }
+.prose p { margin: 0; color: var(--ink-2); font-size: 17px; max-width: 36em; }
+
+.who { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.who > div { padding: 18px 20px; border: 1px solid var(--rule); border-radius: 14px; background: var(--surface); }
+.who h3 { font-size: 19px; font-weight: 750; margin-bottom: 6px; }
+.who p { margin: 0; color: var(--ink-2); font-size: 15px; }
+
+.pull {
+  margin: 0;
+  padding-left: clamp(18px, 3vw, 28px);
+  border-left: 4px solid var(--gold);
+  font-family: var(--display);
+  font-stretch: 105%;
+  font-weight: 700;
+  font-size: clamp(26px, 3.6vw, 44px);
+  line-height: 1.15;
+  max-width: 22em;
+  text-wrap: balance;
+}
+
+.gallery { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.gallery figure { margin: 0; display: grid; gap: 10px; }
+.gallery figcaption { color: var(--ink-3); font-size: 13px; }
+
+/* ---- contact band ---- */
+.contact { background: var(--night); color: var(--on-night); padding-top: clamp(64px, 9vw, 112px); }
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; align-items: end; }
+.contact h2 { font-size: clamp(34px, 5vw, 62px); font-weight: 850; }
+.contact p { margin: 20px 0 0; color: var(--on-night-2); max-width: 32em; }
+.contact .actions { margin-top: 28px; }
+.lines { display: grid; gap: 12px; }
+.line {
+  display: grid;
+  gap: 2px;
+  padding: 14px 18px;
+  border: 1px solid var(--night-rule);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: border-color .2s;
+}
+.line:hover { border-color: var(--on-night-2); }
+.line .mono { color: var(--on-night-2); font-size: 11px; }
+.line strong { font-weight: 500; font-size: 17px; }
+.site-foot {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 6px 14px;
-  padding-top: 18px;
-  border-top: 1px solid var(--rule-dark);
+  gap: 12px;
+  margin-top: clamp(48px, 7vw, 80px);
+  padding-block: 22px;
+  border-top: 1px solid var(--night-rule);
+  color: var(--on-night-2);
+  font-size: 13px;
 }
-.site-foot a { color: var(--on-dark-2); }
-.site-foot a:hover { color: var(--on-dark); }
-.site-foot a:focus-visible { outline-color: var(--on-dark); }
+.site-foot .brand { font-size: 15px; }
+.site-foot .mark { width: 24px; }
 
-/* ---- desktop step up ---- */
-/* Modest. Mobile is the design surface and these figures are the approved
-   mockup; this query lifts them, it does not redesign them. */
-@media (min-width: 768px) {
-  :root { --gutter: 24px; }
+/* ---- 404 ---- */
+.missing .wrap { padding-block: clamp(40px, 8vw, 96px); }
+.missing .lede a { color: var(--gold); }
 
-  .site-head .wrap { min-height: 62px; }
-  .site-mark img { height: 25px; }
-  .site-nav { gap: 24px; }
-  .site-nav a { font-size: 13.5px; }
+/* ---- smallest phones ---- */
+@media (max-width: 380px) {
+  .brand { font-size: 16px; gap: 8px; }
+  .site-head .mark { width: 28px; }
+  .site-nav .pill { padding: 0 12px; font-size: 13px; }
+}
+@media (max-width: 560px) {
+  .site-nav a:not(.pill) { display: none; }
+  .pick { min-width: 120px; }
+}
 
-  .hero { padding-block: 52px 44px; }
-  .kick { font-size: 10px; margin-bottom: 16px; }
-  .hero h1 { font-size: clamp(31px, 3.4vw, 40px); margin-bottom: 16px; max-width: 18ch; }
-  .sub { font-size: 15px; line-height: 1.6; margin-bottom: 26px; max-width: 52ch; }
+/* ---- tablet and up ---- */
+@media (min-width: 640px) {
+  .stat { padding: 26px 20px 24px; }
+  .stat b { font-size: 40px; }
+  .stat span { font-size: 14px; }
+  .who { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-work { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-shot.with-phones { grid-template-columns: minmax(0, 3fr) repeat(2, minmax(0, 1fr)); align-items: end; }
+}
 
-  .btn { font-size: 13.5px; padding: 12px 22px; }
+/* ---- desktop ---- */
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  .s-head { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .product { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .product:nth-child(even) .copy { order: 2; }
+  .media .back { width: 78%; }
+  .media .front { width: 82%; margin-top: -34%; }
+  .phones { width: 74%; }
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .step { padding: 26px 28px 8px 0; }
+  .step + .step { padding-left: 28px; border-top: 0; border-left: 1px solid var(--rule); }
+  .caps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .contact-grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  .case-hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .part { grid-template-columns: 200px minmax(0, 1fr); }
+  .grid-work { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 
-  .cell { padding: 18px 14px 19px 18px; }
-  .cell b { font-size: 21px; }
-  .cell span { font-size: 9px; margin-top: 7px; }
-
-  .sect { padding-block: 46px 8px; }
-  .shead { gap: 14px; margin-bottom: 20px; }
-  .snum { font-size: 11px; }
-  .shead h2 { font-size: 22px; }
-
-  .item { padding: 19px 0; }
-  .ihead h4 { font-size: 16px; }
-  .item p { font-size: 13.5px; margin-top: 7px; }
-  .specs { font-size: 10.5px; margin-top: 9px; }
-  .st { font-size: 9.5px; }
-
-  /* Two columns above the breakpoint, one below. The hairline between them is
-     a border on the right hand cell, so it never hangs off the last row. */
-  .seg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .seg > * { padding: 17px 24px 17px 0; }
-  .seg > *:nth-child(even) { padding-right: 0; padding-left: 24px; border-left: 1px solid var(--rule); }
-  .seg h4 { font-size: 14.5px; }
-  .seg p { font-size: 13.5px; }
-
-  .pull { margin: 32px 0; padding-left: 22px; font-size: 22px; line-height: 1.38; }
-
-  .contact { margin-top: 56px; padding-block: 56px 58px; }
-  .contact h2 { font-size: 22px; margin-bottom: 10px; }
-  .contact p { font-size: 13.5px; margin-bottom: 20px; }
-  .contact-actions { flex-direction: row; align-items: center; gap: 28px; }
-  .contact-actions a { font-size: 14px; }
-
-  .site-foot { font-size: 10px; padding-bottom: 34px; }
-  .site-foot .wrap { padding-top: 22px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }

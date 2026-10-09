@@ -117,7 +117,7 @@ echo "== outbound links resolve =="
 if [ "${SKIP_NETWORK:-0}" = "1" ]; then
   echo "  skipped (SKIP_NETWORK=1)"
 else
-  for url in https://lokkate.com https://liveonforever.com; do
+  for url in https://lokkate.com https://liveonforever.com https://kasagadi.ai https://ghanaaisummit.com; do
     got="$(status_follow "$url")"
     case "$got" in
       2*|3*) ok "$url -> $got" ;;
