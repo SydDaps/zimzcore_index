@@ -1,49 +1,78 @@
 // Homepage showcase: one browser window that cycles through the projects in
 // the picker. Each picker button carries its project's screenshot, address bar
 // text and anchor as data attributes, so adding a project is one button in the
-// HTML and nothing here. Auto advance stops for good once someone picks one,
-// and never starts under prefers-reduced-motion.
+// HTML and nothing here.
+//
+// The gold progress bar under the active button IS the timer: when its
+// animation finishes, the next project shows. Pausing the bar pauses the cycle,
+// which keeps the two from ever drifting apart. It pauses while the pointer or
+// keyboard focus is on the showcase, while the tab is hidden, and while the
+// showcase is scrolled out of view. Picking a project stops the cycle for good.
+// Under prefers-reduced-motion it never starts.
 (() => {
   const picker = document.getElementById('picker');
   if (!picker) return;
 
-  const img = document.getElementById('show-img');
+  const showcase = picker.closest('.showcase');
+  const screen = showcase.querySelector('.screen');
   const url = document.getElementById('show-url');
   const link = document.getElementById('show-link');
   const buttons = [...picker.querySelectorAll('.pick')];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const DWELL = 5000;
+
   let current = 0;
   let auto = !reduce;
-  let timer;
+  let progress = null;
+  const holds = new Set(); // reasons the cycle is paused right now
 
-  // Warm the cache so the first swap to each project does not flash.
+  // Warm the cache so the first swap to each project is instant.
   buttons.forEach(b => { new Image().src = b.dataset.img; });
+
+  function swapImage(src, alt) {
+    const top = screen.lastElementChild;
+    if (top && top.getAttribute('src') === src) return;
+
+    const next = new Image();
+    next.src = src;
+    next.alt = alt;
+    next.className = 'incoming';
+    // Decode before showing, so the fade never starts on a blank frame.
+    const ready = next.decode ? next.decode().catch(() => {}) : Promise.resolve();
+    ready.then(() => {
+      screen.appendChild(next);
+      requestAnimationFrame(() => requestAnimationFrame(() => next.classList.remove('incoming')));
+      // Once it is fully in, drop everything underneath it. Clicking fast just
+      // retargets the transition, and the stack never grows past a few images.
+      next.addEventListener('transitionend', () => {
+        while (screen.firstElementChild !== next) screen.firstElementChild.remove();
+      }, { once: true });
+      if (reduce) while (screen.firstElementChild !== next) screen.firstElementChild.remove();
+    });
+  }
+
+  function startProgress(b) {
+    if (progress) progress.cancel();
+    progress = null;
+    if (!auto) return;
+    progress = b.querySelector('i').animate(
+      [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+      { duration: DWELL, easing: 'linear' }
+    );
+    if (holds.size) progress.pause();
+    progress.onfinish = () => { if (auto) show(current + 1); };
+  }
 
   function show(index) {
     current = (index + buttons.length) % buttons.length;
     const b = buttons[current];
 
-    buttons.forEach((other, n) => {
-      other.setAttribute('aria-pressed', n === current);
-      const bar = other.querySelector('i');
-      bar.getAnimations().forEach(a => a.cancel());
-      if (n === current && auto) {
-        bar.animate([{ width: '0%' }, { width: '100%' }], { duration: DWELL, easing: 'linear', fill: 'forwards' });
-      }
-    });
-
-    if (img.getAttribute('src') !== b.dataset.img) {
-      img.classList.add('out');
-      setTimeout(() => {
-        img.src = b.dataset.img;
-        img.alt = b.dataset.alt;
-        img.classList.remove('out');
-      }, reduce ? 0 : 220);
-    }
+    buttons.forEach((other, n) => other.setAttribute('aria-pressed', n === current));
+    swapImage(b.dataset.img, b.dataset.alt);
     url.textContent = b.dataset.url;
     link.href = '#' + b.dataset.id;
     link.setAttribute('aria-label', b.querySelector('b').textContent + ', see details');
+    startProgress(b);
 
     // Keep the active button in view without scrolling the page itself.
     if (b.offsetLeft < picker.scrollLeft || b.offsetLeft + b.offsetWidth > picker.scrollLeft + picker.clientWidth) {
@@ -51,12 +80,25 @@
     }
   }
 
+  function hold(reason, on) {
+    on ? holds.add(reason) : holds.delete(reason);
+    if (!progress) return;
+    holds.size ? progress.pause() : progress.play();
+  }
+
   buttons.forEach((b, n) => b.addEventListener('click', () => {
     auto = false;
-    clearInterval(timer);
     show(n);
   }));
 
+  showcase.addEventListener('pointerenter', () => hold('pointer', true));
+  showcase.addEventListener('pointerleave', () => hold('pointer', false));
+  showcase.addEventListener('focusin', () => hold('focus', true));
+  showcase.addEventListener('focusout', e => { if (!showcase.contains(e.relatedTarget)) hold('focus', false); });
+  document.addEventListener('visibilitychange', () => hold('hidden', document.hidden));
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => hold('offscreen', !entry.isIntersecting)).observe(showcase);
+  }
+
   show(0);
-  if (auto) timer = setInterval(() => show(current + 1), DWELL);
 })();

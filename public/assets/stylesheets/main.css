@@ -8,7 +8,9 @@
    2. Every colour is a token on :root, redefined once for dark mode. The night
       bands stay night in both themes.
    3. Motion is small and purposeful: the homepage showcase cross fades, cards
-      lift on hover. All of it is switched off under prefers-reduced-motion.
+      lift on hover, anything pressable gives under the finger. Only transform,
+      opacity and filter animate. Reduced motion keeps the fades and colour
+      changes and drops every movement.
    4. Vertical padding on a .wrap uses padding-block, never the `padding`
       shorthand, which would wipe out the side gutter. */
 
@@ -78,6 +80,9 @@
 
   --max: 1200px;
   --gutter: clamp(16px, 4vw, 40px);
+
+  /* Strong ease-out: starts fast, so the response feels immediate. */
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -172,7 +177,7 @@ h1, h2, h3, h4 {
   background: var(--gold);
   color: var(--night);
   font-weight: 600;
-  transition: background-color .2s;
+  transition: background-color .2s, transform 160ms var(--ease-out);
 }
 .site-nav .pill:hover { background: var(--gold-hover); color: var(--night); }
 
@@ -187,12 +192,15 @@ h1, h2, h3, h4 {
   font-weight: 600;
   font-size: 15px;
   text-decoration: none;
-  transition: background-color .2s, border-color .2s;
+  transition: background-color .2s, border-color .2s, transform 160ms var(--ease-out);
 }
 .btn-gold { background: var(--gold); color: var(--night); }
 .btn-gold:hover { background: var(--gold-hover); }
 .btn-ghost { border: 1px solid var(--night-rule); color: var(--on-night); }
 .btn-ghost:hover { border-color: var(--on-night-2); }
+
+/* Press feedback: the interface heard you. Subtle, and it scales the label with it. */
+.btn:active, .site-nav .pill:active, .pick:active, .line:active { transform: scale(.97); }
 
 /* ---- device frames ---- */
 .browser { display: block; background: var(--frame); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; }
@@ -239,8 +247,19 @@ h1, h2, h3, h4 {
    picker buttons' data attributes, so adding one is one button in the HTML. */
 .showcase { display: grid; gap: 14px; min-width: 0; padding-bottom: clamp(40px, 6vw, 72px); }
 .screen { position: relative; aspect-ratio: 16 / 10; background: var(--night-2); }
-.screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: opacity .45s ease; }
-.screen img.out { opacity: 0; }
+.screen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  transition: opacity 320ms var(--ease-out), filter 320ms var(--ease-out);
+}
+/* The incoming screenshot is stacked on top of the outgoing one and fades in
+   over it, so the window never flashes empty. A light blur blends the two
+   states into one change instead of two pictures swapping. */
+.screen img.incoming { opacity: 0; filter: blur(6px); }
 .picker { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; padding-bottom: 2px; }
 .picker::-webkit-scrollbar { display: none; }
 .pick {
@@ -259,13 +278,13 @@ h1, h2, h3, h4 {
   text-align: left;
   cursor: pointer;
   scroll-snap-align: start;
-  transition: border-color .2s, background-color .2s;
+  transition: border-color .2s, background-color .2s, transform 160ms var(--ease-out);
 }
 .pick b { color: var(--on-night); font-weight: 600; font-size: 14px; }
 .pick span { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
 .pick:hover { border-color: var(--on-night-2); }
 .pick[aria-pressed="true"] { background: var(--night-2); border-color: var(--gold); }
-.pick i { position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: var(--gold); }
+.pick i { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; }
 .all { justify-self: end; display: inline-flex; align-items: center; min-height: 40px; color: var(--on-night-2); font-size: 13px; text-decoration: none; }
 .all:hover { color: var(--on-night); }
 
@@ -353,9 +372,13 @@ h1, h2, h3, h4 {
   background: var(--surface);
   color: inherit;
   text-decoration: none;
-  transition: border-color .2s, transform .25s cubic-bezier(.2, .7, .2, 1);
+  transition: border-color .2s, transform 200ms var(--ease-out);
 }
-a.tile:hover { border-color: var(--brand); transform: translateY(-3px); }
+a.tile:active { transform: scale(.98); }
+/* Lift only where hover exists. On a phone a tap would leave the card stuck up. */
+@media (hover: hover) and (pointer: fine) {
+  a.tile:hover { border-color: var(--brand); transform: translateY(-3px); }
+}
 .tile .browser { box-shadow: none; }
 .tile-body { display: grid; gap: 8px; padding-inline: 6px; }
 .tile h2 { font-size: 26px; font-weight: 800; }
@@ -408,12 +431,12 @@ a.tile:hover { border-color: var(--brand); transform: translateY(-3px); }
 .lines { display: grid; gap: 12px; }
 .line {
   display: grid;
+  transition: border-color .2s, transform 160ms var(--ease-out);
   gap: 2px;
   padding: 14px 18px;
   border: 1px solid var(--night-rule);
   border-radius: 14px;
   text-decoration: none;
-  transition: border-color .2s;
 }
 .line:hover { border-color: var(--on-night-2); }
 .line .mono { color: var(--on-night-2); font-size: 11px; }
@@ -477,7 +500,12 @@ a.tile:hover { border-color: var(--brand); transform: translateY(-3px); }
   .grid-work { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* Reduced motion means gentler, not none: fades and colour changes stay
+   because they help, anything that moves or scales goes. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  *, *::before, *::after { animation: none !important; }
+  .btn:active, .site-nav .pill:active, .pick:active, .line:active,
+  a.tile:active, a.tile:hover { transform: none; }
+  .screen img.incoming { filter: none; }
 }
